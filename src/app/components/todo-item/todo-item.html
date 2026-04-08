@@ -1,1 +1,9 @@
-<p>todo-item works!</p>
+<div>
+    <h3>{{ todo.title }}</h3>
+    <p>{{ todo.description }}</p>
+    <button (click)="toggleComplete()">
+        {{ todo.completed ? 'Mark as Incomplete' : 'Mark as Complete' }}
+    </button>
+    <button (click)="onEdit()">Edit</button>
+    <button (click)="onDelete()">Delete</button>
+</div>
