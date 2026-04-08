@@ -12,6 +12,9 @@ export class Todo {
   getTodos(): TodoModel[] {
     return this.todos;
   }
+  getTodoById(id:number):TodoModel | undefined {
+    return this.todos.find(t=> t.id === id);
+  }
   
   addTodo(title: string, description:string):void {
     const newTodo: TodoModel = {
@@ -40,6 +43,7 @@ export class Todo {
   
   deletetodo(id: number) : void {
     this.todos = this.todos.filter(t=> t.id !== id);
+
   }
   
 
