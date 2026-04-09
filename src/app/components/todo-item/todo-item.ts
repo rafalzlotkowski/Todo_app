@@ -27,18 +27,16 @@ export class TodoItemComponent {
   console.log('Status zmieniony na:', this.todo.isCompleted);
 }
 
-  onDelete() {
+  Delete() {
     this.delete.emit(this.todo.id);
   }
 
-  onEdit(){
+  editing(){
     const newTitle = prompt('Nowy tytuł', this.todo.title);
     const newDescription = prompt('Nowy opis', this.todo.description);
     if (newTitle !== null && newDescription !== null) {
       this.edit.emit({id:this.todo.id, title: newTitle, description: newDescription});
     }
   }
-  onSelect() {
-    this.select.emit(this.todo.id);
-  }
+  
 }
