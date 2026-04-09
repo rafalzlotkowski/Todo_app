@@ -41,7 +41,7 @@ export class TodoService {
     }
   }
   
-  deletetodo(id: number) : void {
+  deleteTodo(id: number) : void {
     this.todos = this.todos.filter(t=> t.id !== id);
     
   }
