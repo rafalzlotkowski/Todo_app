@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Todo as TodoModel } from '../models/todo.models';
+import { TodoModels as TodoModel } from '../models/todo.models';
 @Injectable({
   providedIn: 'root',
 })
-export class Todo {
+export class TodoService {
   private todos: TodoModel[] = [];
   private nextId: number = 1;
 
@@ -43,8 +43,8 @@ export class Todo {
   
   deletetodo(id: number) : void {
     this.todos = this.todos.filter(t=> t.id !== id);
-
+    
   }
   
-
+  
 }
