@@ -1,4 +1,5 @@
-import { Component, Input, Output,EventEmitter } from '@angular/core';
+import { Component, Input, Output,EventEmitter, output } from '@angular/core';
+
 
 
 @Component({
@@ -7,13 +8,14 @@ import { Component, Input, Output,EventEmitter } from '@angular/core';
   templateUrl: './todo-item.html',
   styleUrl: './todo-item.css',
 })
-export class TodoItem {
+export class TodoItemComponent {
   @Input() todo!: any;
   @Output() toggle = new EventEmitter <number>;
   @Output() delete = new EventEmitter <number>;
   @Output() edit = new EventEmitter <{id:number, title:string, description:string}>();
+  @Output() select = new EventEmitter<number>();
 
-  onToggle() {
+  onToggleComplete() {
     this.toggle.emit(this.todo.id);
   }
 
@@ -27,5 +29,8 @@ export class TodoItem {
     if (newTitle !== null && newDescription !== null) {
       this.edit.emit({id:this.todo.id, title: newTitle, description: newDescription});
     }
+  }
+  onSelect() {
+    this.select.emit(this.todo.id);
   }
 }

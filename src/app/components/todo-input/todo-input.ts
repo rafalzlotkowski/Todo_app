@@ -8,7 +8,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
   templateUrl: './todo-input.html',
   styleUrl: './todo-input.css',
 })
-export class TodoInput {
+export class TodoInputComponent {
   title: string = '';
   description: string = '';
 

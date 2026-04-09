@@ -1,1 +1,8 @@
-<p>todo-list works!</p>
+<div>
+    <app-todo-item *ngFor="let todo of todos" [todo]="todo" 
+    (delete)="delete.emit($event)"
+    (toggle)="toggle.emit($event)"
+    (select)="select.emit($event)">
+
+</app-todo-item>
+</div>

@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TodoInput } from './todo-input';
+import { TodoInputComponent } from './todo-input';
 
 describe('TodoInput', () => {
-  let component: TodoInput;
-  let fixture: ComponentFixture<TodoInput>;
+  let component: TodoInputComponent;
+  let fixture: ComponentFixture<TodoInputComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TodoInput],
+      imports: [TodoInputComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TodoInput);
+    fixture = TestBed.createComponent(TodoInputComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
