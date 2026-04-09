@@ -14,5 +14,6 @@ export class TodoListComponent {
   @Output() toggle = new EventEmitter<number>();
   @Output() delete = new EventEmitter<number>();
   @Output() select = new EventEmitter<number>();
+  @Output() edit = new EventEmitter<{id:number, title:string, description:string}>();
 
 }
