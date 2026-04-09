@@ -1,8 +1,8 @@
 <div>
-    <h3>{{ todo.title }}</h3>
-    <p>{{ todo.description }}</p>
-    <button (click)="onToggleComplete()">Toggle Complete</button>
-    <button (click)="onEdit()">Edit</button>
-    <button (click)="onDelete()">Delete</button>
+    <h3>Zadanie: {{ todo.title }}</h3>
+    <p>Opis: {{ todo.description }}</p>
+    <button (click)="onToggleComplete()" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg">Toggle Complete</button>
+    <button (click)="onEdit()" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg">Edit</button>
+    <button (click)="onDelete()" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg">Delete</button>
     
 </div>

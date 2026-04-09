@@ -1,4 +1,5 @@
-import { Component, Input, Output,EventEmitter, output } from '@angular/core';
+import { Component, Input, Output,EventEmitter } from '@angular/core';
+
 
 
 
@@ -9,7 +10,9 @@ import { Component, Input, Output,EventEmitter, output } from '@angular/core';
   styleUrl: './todo-item.css',
 })
 export class TodoItemComponent {
-  @Input() todo!: any;
+  @Input() todo!: any
+  @Input() add = new EventEmitter<{id: number, title: string, description: string }>();
+
   @Output() toggle = new EventEmitter <number>;
   @Output() delete = new EventEmitter <number>;
   @Output() edit = new EventEmitter <{id:number, title:string, description:string}>();
