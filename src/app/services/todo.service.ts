@@ -35,7 +35,7 @@ export class TodoService {
     this.todos = this.todos.map(t=> t.id === id ? {...t, completed: !t.completed} : t);
   }
   
-  deletetodo(id: number) : void {
+  deleteTodo(id: number) : void {
     this.todos = this.todos.filter(t=> t.id !== id);
     
   }
