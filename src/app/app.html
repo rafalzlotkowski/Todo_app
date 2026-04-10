@@ -11,7 +11,7 @@
   </app-todo-input>
   @if (todoService.notification.message) {
     <div 
-      class="fixed top-5 left-1/2 -translate-x-1/2 z-[100] px-6 py-3 rounded-lg shadow-lg text-white font-bold"
+      class="fixed top-5 left-1/2 -translate-x-1/2  px-6 py-3 rounded-lg shadow-lg text-white font-bold"
       [class.bg-green-600]="todoService.notification.type === 'success'"
       [class.bg-red-600]="todoService.notification.type === 'error'"
     >
