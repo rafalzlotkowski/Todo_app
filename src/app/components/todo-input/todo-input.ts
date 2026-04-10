@@ -6,24 +6,25 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-todo-input',
+  standalone:true,
   imports: [FormsModule, CommonModule],
   templateUrl: './todo-input.html',
   styleUrl: './todo-input.css',
 })
 export class TodoInputComponent {
-  title: string = '';
-  description: string = '';
+  title = '';
+  description = '';
 
   @Output() add = new EventEmitter<{ title: string; description: string }>();
 
-  submit() {
-  this.add.emit({
-    title: this.title,
-    description: this.description
-  });
+  submit(form :any) {
+    if (!this.title.trim())return;
+    this.add.emit({
+      title: this.title,
+      description: this.description
+    });
 
-  this.title = '';
-  this.description = '';
+  form.resteForm()
 }
 
 }
