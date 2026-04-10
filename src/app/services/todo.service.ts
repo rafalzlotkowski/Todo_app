@@ -10,7 +10,7 @@ export class TodoService {
   
 
   getTodos(): TodoModel[] {
-    return this.todos;
+    return [...this.todos];
   }
   getTodoById(id:number):TodoModel | undefined {
     return this.todos.find(t=> t.id === id);
@@ -23,22 +23,16 @@ export class TodoService {
       description,
       completed: false,
     };
-    this.todos.push(newTodo);
+    this.todos = [...this.todos, newTodo];  
   }
 
   editTodo(id:number, title: string, description:string):void{
     const todo = this.todos.find(t=> t.id === id);
-    if (todo){
-      todo.title = title;
-      todo.description = description;
-    }
+    this.todos = this.todos.map(t=> t.id === id ? {...t, title, description} : t);
   }
 
   toggleCompleted(id :number):void {
-    const todo = this.todos.find(t=> t.id === id);
-    if (todo) { 
-      todo.completed = !todo.completed;
-    }
+    this.todos = this.todos.map(t=> t.id === id ? {...t, completed: !t.completed} : t);
   }
   
   deletetodo(id: number) : void {
