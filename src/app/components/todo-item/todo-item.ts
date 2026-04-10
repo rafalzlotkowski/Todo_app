@@ -28,11 +28,20 @@ export class TodoItemComponent {
     this.delete.emit(this.todo.id);
   }
 
-  editing(){
+  editing() {
     const newTitle = prompt('Nowy tytuł', this.todo.title);
     const newDescription = prompt('Nowy opis', this.todo.description);
-    if (newTitle !== null && newDescription !== null) {
-      this.edit.emit({id:this.todo.id, title: newTitle, description: newDescription});
+    
+    if (newTitle !== null && newTitle.trim() !== "" && newDescription !== null) {
+      this.edit.emit({
+        id: this.todo.id, 
+        title: newTitle.trim(), 
+        description: newDescription.trim()
+        
+        
+      });
+    
+      
     }
   }
   
