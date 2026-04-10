@@ -24,7 +24,9 @@ export class TodoInputComponent {
       description: this.description
     });
 
-  form.resteForm()
+  this.title='',
+  this.description=''
+
 }
 
 }

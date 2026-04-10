@@ -1,10 +1,10 @@
-<div *ngFor="let todo of todos"class ="p-6 bg-gray-300 rounded-xl shadow-lg space-y-4 mb-4">
+<h1 class="text-center font-bold text-2xl">Lista</h1>
+<div *ngFor="let todo of todos"class ="p-1 bg-gray-300 rounded-xl shadow-lg space-y-4 mb-4">
 
   <app-todo-item
     [todo]="todo"
     (delete)="delete.emit($event)"
     (edit)="edit.emit($event)"
-    (toggle)="toggle.emit($event)"
-    (select)="select.emit($event)">
+    (toggle)="toggle.emit($event)">
   </app-todo-item>
 </div>

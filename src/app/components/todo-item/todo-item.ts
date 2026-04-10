@@ -6,6 +6,7 @@ import{ FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-todo-item',
+  standalone:true,
   imports: [  FormsModule],
   templateUrl: './todo-item.html',
   styleUrl: './todo-item.css',
@@ -20,14 +21,10 @@ export class TodoItemComponent {
   @Output() select = new EventEmitter<number>();
 
   onToggleComplete() {
-  this.todo.isCompleted = !this.todo.isCompleted;
-
   this.toggle.emit(this.todo.id);
-  
-  console.log('Status zmieniony na:', this.todo.isCompleted);
-}
+  }
 
-  Delete() {
+  deleteitem() {
     this.delete.emit(this.todo.id);
   }
 
