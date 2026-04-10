@@ -6,11 +6,18 @@ import { TodoModels as TodoModel } from '../models/todo.models';
 export class TodoService {
   private todos: TodoModel[] = [];
   private nextId: number = 1;
-
+  constructor() {
+    const data= localStorage.getItem('todos') 
+      if(data) {
+        this.todos = JSON.parse(data);
+        this.nextId = this.todos.length > 0 ? Math.max(...this.todos.map(t => t.id))+1 :1;
+      }      
+  }
+  
   
 
   getTodos(): TodoModel[] {
-    return [...this.todos];
+    return this.todos;
   }
   getTodoById(id:number):TodoModel | undefined {
     return this.todos.find(t=> t.id === id);
@@ -23,21 +30,33 @@ export class TodoService {
       description,
       completed: false,
     };
-    this.todos = [...this.todos, newTodo];  
+    this.todos.push(newTodo);
+    localStorage.setItem('todos',JSON.stringify(this.todos))
+    
   }
 
   editTodo(id:number, title: string, description:string):void{
     const todo = this.todos.find(t=> t.id === id);
-    this.todos = this.todos.map(t=> t.id === id ? {...t, title, description} : t);
+    if (todo){
+      todo.title = title;
+      todo.description = description;
+    }
+  localStorage.setItem('todos',JSON.stringify(this.todos))
+
   }
 
-  toggleCompleted(id :number):void {
-    this.todos = this.todos.map(t=> t.id === id ? {...t, completed: !t.completed} : t);
+  toggleCompleted(id: number): void {
+  const todo = this.todos.find(t => t.id === id);
+  if (todo) { 
+    todo.completed = !todo.completed;
+    localStorage.setItem('todos', JSON.stringify(this.todos));
   }
+}
   
   deleteTodo(id: number) : void {
     this.todos = this.todos.filter(t=> t.id !== id);
-    
+  localStorage.setItem('todos',JSON.stringify(this.todos))
+
   }
   
   
