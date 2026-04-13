@@ -16,12 +16,19 @@
   </div>
 }
 
+
+<app-todo-edit
+  *ngIf="selectedTodo"
+  [todo]="selectedTodo"
+  (save)="onSaveEdit($event)"
+></app-todo-edit>
+
   <app-todo-list
     [todos]="todos"
     (toggle)="ontoggleTodo($event)"
     (delete)="onDeleteTodo($event)"
     (select)="onSelectTodo($event)"
-    (edit)="onEditTodo($event.id, $event.title, $event.description)"
+    (edit)="onEditTodo($event)"
     class="block">
   </app-todo-list>
 

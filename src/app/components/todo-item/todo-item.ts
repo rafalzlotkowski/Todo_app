@@ -1,4 +1,4 @@
-import { Component, Input, Output,EventEmitter } from '@angular/core';
+import { Component, Input, Output,EventEmitter, output } from '@angular/core';
 import{ FormsModule } from '@angular/forms';
 
 
@@ -14,10 +14,9 @@ import{ FormsModule } from '@angular/forms';
 export class TodoItemComponent {
   @Input() todo!: any
   @Input() add = new EventEmitter<{id: number, title: string, description: string }>();
-
   @Output() toggle = new EventEmitter <number>;
   @Output() delete = new EventEmitter <number>;
-  @Output() edit = new EventEmitter <{id:number, title:string, description:string}>();
+  @Output() edit = new EventEmitter<any>();
   @Output() select = new EventEmitter<number>();
 
   onToggleComplete() {
@@ -38,24 +37,10 @@ export class TodoItemComponent {
   this.delete.emit(this.todo.id);
 }
 
+
   
 
 
-  editing() {
-    const newTitle = prompt('Nowy tytuł', this.todo.title);
-    const newDescription = prompt('Nowy opis', this.todo.description);
-    
-    if (newTitle !== null && newTitle.trim() !== "" && newDescription !== null) {
-      this.edit.emit({
-        id: this.todo.id, 
-        title: newTitle.trim(), 
-        description: newDescription.trim()
-        
-        
-      });
-    
-      
-    }
-  }
+  
   
 }

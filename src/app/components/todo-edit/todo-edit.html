@@ -1,0 +1,19 @@
+<div class="bg-gray-400 p-6 rounded-xl shadow-lg space-y-4">
+  <h3 class="text-xl font-bold">Edytujesz zadanie</h3>
+
+  <label>Tytuł:</label>
+  <input [(ngModel)]="todo.title" class="w-full p-2 rounded" />
+
+  <label>Opis:</label>
+  <textarea [(ngModel)]="todo.description" class="w-full p-2 rounded"></textarea>
+
+  <div class="flex gap-4 mt-4">
+    <button class="bg-green-600 text-white px-4 py-2 rounded" (click)="onSave()">
+      Zapisz
+    </button>
+
+    <button class="bg-red-600 text-white px-4 py-2 rounded" (click)="cancel.emit()">
+      Anuluj
+    </button>
+  </div>
+</div>
