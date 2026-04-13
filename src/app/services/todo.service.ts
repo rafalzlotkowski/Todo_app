@@ -6,8 +6,7 @@ import { TodoModels as TodoModel } from '../models/todo.models';
 export class TodoService {
   private todos: TodoModel[] = [];
   private nextId: number = 1;
-  message: string |null = null;
-  
+  message: string | null = null;  
   constructor() {
     const data= localStorage.getItem('todos') 
       if(data) {
@@ -15,8 +14,12 @@ export class TodoService {
         this.nextId = this.todos.length > 0 ? Math.max(...this.todos.map(t => t.id))+1 :1;
       }      
   }
-  notyfication(message:string){
-    return this.message
+  notyfication(msg: string) {
+    this.message = msg;
+    
+    setTimeout(() => {
+      this.message = null;
+    }, 1000);
   }
 
 
@@ -34,7 +37,7 @@ export class TodoService {
       description,
       completed: false,
     };
-    this.notyfication("zadanie dodane" );
+    this.notyfication("Zadanie zostało dodane!");
     this.todos.push(newTodo);
     localStorage.setItem('todos',JSON.stringify(this.todos));
     
@@ -47,6 +50,8 @@ export class TodoService {
       todo.description = description;
       
     }
+    this.notyfication("Zadanie zostalo edytowane!");
+
     localStorage.setItem('todos',JSON.stringify(this.todos));
 
 
@@ -58,11 +63,15 @@ export class TodoService {
     todo.completed = !todo.completed;
     localStorage.setItem('todos', JSON.stringify(this.todos));
   }
+
 }
   
   deleteTodo(id: number) : void {
     this.todos = this.todos.filter(t=> t.id !== id);
     localStorage.setItem('todos',JSON.stringify(this.todos))
+    this.notyfication("Zadanie zostało usunięte !");
+
   }  
+
   
 }

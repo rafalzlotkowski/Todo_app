@@ -10,12 +10,11 @@
     class="block">
   </app-todo-input>
  
-<div class="bg-green-600"
-*ngIf="  message">
-{{message}}
-
-
-</div>
+@if (currentMessage) {
+  <div class="p-6 bg-gray-300 rounded-xl shadow-lg space-y-4 text-green-600   text-center transition-all">
+    {{ currentMessage }}
+  </div>
+}
 
   <app-todo-list
     [todos]="todos"

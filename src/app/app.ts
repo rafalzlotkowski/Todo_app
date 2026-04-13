@@ -26,8 +26,8 @@ export class App {
     return this.todoService.getTodos();
   }
 
-  notyfication(message: string){
-    this.todoService.notyfication(message)
+  get currentMessage() {
+    return this.todoService.message;
   }
   onAddTodo(title: string, description: string) {
     this.todoService.addTodo(title, description);

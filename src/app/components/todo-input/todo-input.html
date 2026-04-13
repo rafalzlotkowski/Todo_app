@@ -13,9 +13,11 @@
       [class.border-red-500]="titleField.invalid && titleField.touched"
       [class.border-gray-300]="!(titleField.invalid && titleField.touched)"
     />
-    <span class="text-red-500 text-sm" *ngIf="titleField.invalid && titleField.touched">
-      Zadanie jest wymagane.
-    </span>
+    @if(titleField.invalid && titleField.touched){
+      <span>
+        Niepoprawna nazwa zadania!
+      </span>
+    }
   </div>
 
   <div>
