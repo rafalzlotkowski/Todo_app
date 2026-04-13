@@ -25,8 +25,21 @@ export class TodoItemComponent {
   }
 
   deleteitem() {
-    this.delete.emit(this.todo.id);
+  if (!this.todo.completed) {
+    const confirmed = confirm(
+      "To zadanie nie jest oznaczone jako wykonane. Czy na pewno chcesz je usunąć?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
   }
+
+  this.delete.emit(this.todo.id);
+}
+
+  
+
 
   editing() {
     const newTitle = prompt('Nowy tytuł', this.todo.title);
