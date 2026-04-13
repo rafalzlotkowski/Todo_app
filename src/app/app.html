@@ -9,6 +9,12 @@
     (add)="onAddTodo($event.title, $event.description)"
     class="block">
   </app-todo-input>
+ 
+@if (currentMessage) {
+  <div class="p-6 bg-gray-300 rounded-xl shadow-lg space-y-4 text-green-600   text-center transition-all">
+    {{ currentMessage }}
+  </div>
+}
 
   <app-todo-list
     [todos]="todos"

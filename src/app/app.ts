@@ -5,8 +5,6 @@ import { TodoItemComponent } from './components/todo-item/todo-item';
 import { TodoService } from './services/todo.service';
 import { FormsModule } from '@angular/forms';
 
-
-
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -21,12 +19,16 @@ import { FormsModule } from '@angular/forms';
 })
 export class App {
 
+
   constructor(private todoService: TodoService) {}
 
   get todos() {
     return this.todoService.getTodos();
   }
 
+  get currentMessage() {
+    return this.todoService.message;
+  }
   onAddTodo(title: string, description: string) {
     this.todoService.addTodo(title, description);
   }
