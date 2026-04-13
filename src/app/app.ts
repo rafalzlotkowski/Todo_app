@@ -1,12 +1,51 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import {TodoInputComponent } from './components/todo-input/todo-input';
+import { TodoListComponent } from './components/todo-list/todo-list';
+import { TodoItemComponent } from './components/todo-item/todo-item'; 
+import { TodoService } from './services/todo.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [
+    FormsModule,
+    TodoInputComponent,
+    TodoListComponent,
+  
+  ],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('ToDo_app');
+
+
+  constructor(private todoService: TodoService) {}
+
+  get todos() {
+    return this.todoService.getTodos();
+  }
+
+  get currentMessage() {
+    return this.todoService.message;
+  }
+  onAddTodo(title: string, description: string) {
+    this.todoService.addTodo(title, description);
+  }
+
+  ontoggleTodo(id: number) {
+    this.todoService.toggleCompleted(id);
+  }
+
+  onDeleteTodo(id: number) {
+    this.todoService.deleteTodo(id);
+  }
+
+  onSelectTodo(id: number) {
+    this.todoService.getTodoById(id);
+  }
+
+  onEditTodo(id: number, title: string, description: string) {
+    this.todoService.editTodo(id, title, description);
+  }
 }
