@@ -6,6 +6,7 @@ import { TodoModels as TodoModel } from '../models/todo.models';
 export class TodoService {
   private todos: TodoModel[] = [];
   private nextId: number = 1;
+  message: string |null = null;
   
   constructor() {
     const data= localStorage.getItem('todos') 
@@ -13,6 +14,9 @@ export class TodoService {
         this.todos = JSON.parse(data);
         this.nextId = this.todos.length > 0 ? Math.max(...this.todos.map(t => t.id))+1 :1;
       }      
+  }
+  notyfication(message:string){
+    return this.message
   }
 
 
@@ -30,7 +34,7 @@ export class TodoService {
       description,
       completed: false,
     };
-
+    this.notyfication("zadanie dodane" );
     this.todos.push(newTodo);
     localStorage.setItem('todos',JSON.stringify(this.todos));
     
