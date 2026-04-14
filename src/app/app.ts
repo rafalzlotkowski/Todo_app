@@ -66,6 +66,9 @@ onediting(todo: any){
   this.todoService.editTodo(todo.id,todo.title,todo.description);
   this.selectedTodo
 }
+onCancelEdit() {
+  this.selectedTodo = null;
+}
 
 
 

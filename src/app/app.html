@@ -21,7 +21,9 @@
   *ngIf="selectedTodo"
   [todo]="selectedTodo"
   (save)="onSaveEdit($event)"
-></app-todo-edit>
+  (cancel)="onCancelEdit()"
+>
+</app-todo-edit>
 
   <app-todo-list
     [todos]="todos"
