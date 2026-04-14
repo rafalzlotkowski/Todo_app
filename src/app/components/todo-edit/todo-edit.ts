@@ -18,4 +18,7 @@ export class TodoEdit {
   onSave() {
     this.save.emit(this.todo);
   }
+  onCancel(){
+    this.cancel.emit()
+  }
 }
