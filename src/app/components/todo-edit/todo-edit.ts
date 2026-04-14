@@ -1,24 +1,50 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TodoService } from '../../services/todo.service';
+
 
 
 
 @Component({
   selector: 'app-todo-edit',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule ],
   templateUrl: './todo-edit.html',
   styleUrl: './todo-edit.css',
 })
 export class TodoEdit {
-  @Input() todo!: any;
+  todo!: any
+
   @Output() save = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<void>();
 
-  onSave() {
-    this.save.emit(this.todo);
+constructor(
+    private route: ActivatedRoute,
+    private todoService: TodoService,
+    private router: Router
+  ) {}
+
+  ngOnInit() {
+  const id = Number(this.route.snapshot.paramMap.get('id'));
+  const original = this.todoService.getTodoById(id);
+
+  if (original) {
+    this.todo = { ...original }; // ← KOPIA, nie oryginał
   }
-  onCancel(){
-    this.cancel.emit()
+}
+
+onSave() {
+  this.todoService.editTodo(
+    this.todo.id,
+    this.todo.title,
+    this.todo.description
+  );
+  this.router.navigate(['/']);
   }
+
+onCancel() {
+  this.router.navigate(['/']); 
+}
+
 }

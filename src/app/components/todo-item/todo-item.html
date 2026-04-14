@@ -8,7 +8,7 @@
        [checked]="todo.completed" 
        (change)="onToggleComplete()" 
        class="size-5">    
-       <button (click)="edit.emit(todo)" class="bg-yellow-400 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg">Edit</button>
+       <button [routerLink]="['/edit',todo.id]" class="bg-yellow-400 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg">Edit</button>
     <button (click)="deleteitem()" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg">Delete</button>
     
 </div>
