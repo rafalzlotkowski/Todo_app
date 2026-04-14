@@ -1,5 +1,6 @@
 import { Component, Input, Output,EventEmitter, output } from '@angular/core';
 import{ FormsModule } from '@angular/forms';
+import { RouterModule } from "@angular/router";
 
 
 
@@ -7,7 +8,7 @@ import{ FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-todo-item',
   standalone:true,
-  imports: [  FormsModule],
+  imports: [FormsModule, RouterModule],
   templateUrl: './todo-item.html',
   styleUrl: './todo-item.css',
 })

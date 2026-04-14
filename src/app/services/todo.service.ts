@@ -1,5 +1,6 @@
  import { Injectable } from '@angular/core';
 import { TodoModels as TodoModel } from '../models/todo.models';
+import { RouterLink } from '@angular/router';
 @Injectable({
   providedIn: 'root',
 })
@@ -51,7 +52,7 @@ export class TodoService {
       
     }
     this.notyfication("Zadanie zostalo edytowane!");
-
+    
     localStorage.setItem('todos',JSON.stringify(this.todos));
 
 
