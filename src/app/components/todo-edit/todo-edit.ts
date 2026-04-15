@@ -37,8 +37,8 @@ constructor(
 onSave() {
   this.todoService.editTodo(
     this.todo.id,
-    this.todo.title,
-    this.todo.description
+    this.todo.title.trim(),
+    this.todo.description.trim()
   );
   this.router.navigate(['/']);
   }

@@ -19,6 +19,8 @@ export class TodoInputComponent {
   @Output() add = new EventEmitter<{ title: string; description: string }>();
 
   submit(form :any) {
+    this.title = this.title.trim()
+    this.description = this.description.trim()
     if (!this.title.trim())return;
     this.add.emit({
       title: this.title,
