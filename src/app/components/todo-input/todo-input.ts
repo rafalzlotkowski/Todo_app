@@ -1,7 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { routes } from '../../app.routes';
 
 
 
@@ -15,21 +14,22 @@ import { routes } from '../../app.routes';
 export class TodoInputComponent {
   title = '';
   description = '';
+  dueDate ='';
 
-  @Output() add = new EventEmitter<{ title: string; description: string }>();
+  @Output() add = new EventEmitter<{ title: string; description: string ;dueDate: string }>();
 
   submit(form :any) {
-    this.title = this.title.trim()
-    this.description = this.description.trim()
     if (!this.title.trim())return;
     this.add.emit({
       title: this.title,
-      description: this.description
+      description: this.description,
+      dueDate:this.dueDate
     });
 
   this.title='',
-  this.description=''
- 
+  this.description='',
+  this.dueDate = ''
+
 }
 
 }

@@ -3,6 +3,7 @@
     @if (todo.description) {
         <p>Opis: {{ todo.description }}</p>
     }
+    <p>Data zakończenia: {{todo.dueDate | date:'dd.MM.yyyy' }}</p>
     <p>Status: {{ todo.completed ? 'Zakończone' : 'Niezakończone' }}</p>
     <input type="checkbox" 
        [checked]="todo.completed" 

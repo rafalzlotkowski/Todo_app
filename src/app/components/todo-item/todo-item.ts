@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, Output,EventEmitter, output } from '@angular/core';
 import{ FormsModule } from '@angular/forms';
 import { RouterModule } from "@angular/router";
@@ -8,13 +9,13 @@ import { RouterModule } from "@angular/router";
 @Component({
   selector: 'app-todo-item',
   standalone:true,
-  imports: [FormsModule, RouterModule],
+  imports: [FormsModule, RouterModule, CommonModule],
   templateUrl: './todo-item.html',
   styleUrl: './todo-item.css',
 })
 export class TodoItemComponent {
   @Input() todo!: any
-  @Input() add = new EventEmitter<{id: number, title: string, description: string }>();
+  @Input() add = new EventEmitter<{id: number, title: string, description:string, dueDate?:string }>();
   @Output() toggle = new EventEmitter <number>;
   @Output() delete = new EventEmitter <number>;
   @Output() edit = new EventEmitter<any>();

@@ -27,8 +27,11 @@ export class Home {
     get currentMessage() {
       return this.todoService.message;
     }
-    onAddTodo(title: string, description: string) {
-      this.todoService.addTodo(title, description);
+    onAddTodo(title: string, description: string,dueDate: string) {
+      if(!this){
+
+      }
+      this.todoService.addTodo(title, description,dueDate);
     }
   
     ontoggleTodo(id: number) {
@@ -50,11 +53,11 @@ export class Home {
     this.selectedTodo = { ...todo }; 
   }
    onSaveEdit(todo: any) {
-    this.todoService.editTodo(todo.id, todo.title, todo.description);
+    this.todoService.editTodo(todo.id, todo.title, todo.description,todo.dueDate);
     this.selectedTodo = null;
   }
   onediting(todo: any){
-    this.todoService.editTodo(todo.id,todo.title,todo.description);
+    this.todoService.editTodo(todo.id,todo.title,todo.description,todo.dueDate);
     this.selectedTodo
   }
   onCancelEdit() {
