@@ -1,6 +1,7 @@
  import { Injectable } from '@angular/core';
 import { TodoModels as TodoModel } from '../models/todo.models';
 import { RouterLink } from '@angular/router';
+import { isValidDate } from 'rxjs/internal/util/isDate';
 @Injectable({
   providedIn: 'root',
 })
@@ -8,6 +9,7 @@ export class TodoService {
   private todos: TodoModel[] = [];
   private nextId: number = 1;
   message: string | null = null;  
+  
   constructor() {
     const data= localStorage.getItem('todos') 
       if(data) {
@@ -31,11 +33,12 @@ export class TodoService {
     return this.todos.find(t=> t.id === id);
   }
   
-  addTodo(title: string, description:string):void {
+  addTodo(title: string, description:string, dueDate?:string):void {
     const newTodo: TodoModel = {
       id: this.nextId++,
       title,
       description,
+      dueDate,
       completed: false,
     };
     this.notyfication("Zadanie zostało dodane!");
@@ -44,12 +47,12 @@ export class TodoService {
     
   }
 
-  editTodo(id:number, title: string, description:string):void{
+  editTodo(id:number,title: string, description:string, dueDate?:string):void{
     const todo = this.todos.find(t=> t.id === id);
     if (todo ){
       todo.title = title;
       todo.description = description;
-      
+      todo.dueDate = dueDate;
     }
     this.notyfication("Zadanie zostalo edytowane!");
     
@@ -66,7 +69,7 @@ export class TodoService {
   }
 
 }
-  
+
   deleteTodo(id: number) : void {
     this.todos = this.todos.filter(t=> t.id !== id);
     localStorage.setItem('todos',JSON.stringify(this.todos))
