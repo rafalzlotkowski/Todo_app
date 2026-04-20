@@ -11,7 +11,7 @@
   </div>
   <div>
     <Label>Data zakończenia</Label>
-    <input [(ngModel)]="todo.dueDate" type="date" class="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-gray-400 outline-none " />
+    <input type="date" name="dueDate" [(ngModel)]="todo.dueDate" class="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-gray-400 outline-none"/>
   </div>
   <div class="flex gap-4 mt-4">
     <button class="bg-green-600 text-white px-4 py-2 rounded" (click)="onSave()">
@@ -22,4 +22,5 @@
       Anuluj
     </button>
   </div>
+  
 </div>

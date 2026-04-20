@@ -24,10 +24,9 @@ export class Home {
       return this.todoService.getTodos();
     }
   
-    get currentMessage() {
-      return this.todoService.message;
-    }
-    onAddTodo(title: string, description: string,dueDate: string) {
+    
+
+    onAddTodo(title: string, description: string,dueDate?: string) {
       if(!this){
 
       }

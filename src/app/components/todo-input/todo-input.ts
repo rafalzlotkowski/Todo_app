@@ -19,36 +19,26 @@ export class TodoInputComponent {
   constructor(private todoService: TodoService) {}
   @Output() add = new EventEmitter<{ title: string; description: string ;dueDate: string }>();
   @Output() currentmessage = new EventEmitter<string>();
-  isValidDate(dueDate: string): boolean {
-  if (!dueDate) return false;
-
-  const [year, month, day] = dueDate.split('-').map(Number);
-
-  if (!year || !month || !day) return false;
-
-  const parsed = new Date(dueDate);
-
-  return (
-    parsed.getFullYear() === year &&
-    parsed.getMonth() + 1 === month &&
-    parsed.getDate() === day
-  );
-}
+  
 
   submit(form :any) {
     if (!this.title.trim()) {
-    this.currentmessage.emit("Niepoprawne zadanie !");
+    this.todoService.notyfication("Niepoprawne zadanie !" ,'error');
     return;
   }
-
-  if (!this.isValidDate(this.dueDate)) {
-    this.todoService.notyfication('Niepoprawna data (format RRRR-MM-DD)');
+  if ( !this.todoService.isValidDate(this.dueDate)) {
+    this.todoService.notyfication('Niepoprawna data (format DD-MM-RRRR)','error');
     return;
   }
+   if ( !this.todoService.isNotPastDate(this.dueDate)) {
+    this.todoService.notyfication('Data nie może być z przeszłości !','error');
+    return;
+    }
+  
     this.add.emit({
       title: this.title,
       description: this.description,
-      dueDate:this.dueDate
+      dueDate: this.dueDate
     });
 
   this.title='',

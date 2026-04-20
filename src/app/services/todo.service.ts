@@ -9,6 +9,7 @@ export class TodoService {
   private todos: TodoModel[] = [];
   private nextId: number = 1;
   message: string | null = null;  
+  status: 'success' | 'error' | null = null;
   constructor() {
     const data= localStorage.getItem('todos') 
       if(data) {
@@ -16,13 +17,15 @@ export class TodoService {
         this.nextId = this.todos.length > 0 ? Math.max(...this.todos.map(t => t.id))+1 :1;
       }      
   }
-  notyfication(msg: string) {
-    this.message = msg;
+  notyfication(message: string, status: 'success' | 'error' = 'success') {
+    this.message = message;
+    this.status = status;
     
     setTimeout(() => {
       this.message = null;
     }, 1000);
   }
+  
 
 
   getTodos(): TodoModel[] {
@@ -40,7 +43,7 @@ export class TodoService {
       dueDate,
       completed: false,
     };
-    this.notyfication("Zadanie zostało dodane!");
+    this.notyfication("Zadanie zostało dodane!" ,'success');
     this.todos.push(newTodo);
     localStorage.setItem('todos',JSON.stringify(this.todos));
     
@@ -53,7 +56,7 @@ export class TodoService {
       todo.description = description;
       todo.dueDate = dueDate;
     }
-    this.notyfication("Zadanie zostalo edytowane!");
+    this.notyfication("Zadanie zostalo edytowane!",'success');
     
     localStorage.setItem('todos',JSON.stringify(this.todos));
 
@@ -72,10 +75,28 @@ export class TodoService {
   deleteTodo(id: number) : void {
     this.todos = this.todos.filter(t=> t.id !== id);
     localStorage.setItem('todos',JSON.stringify(this.todos))
-    this.notyfication("Zadanie zostało usunięte !");
-
+    this.notyfication("Zadanie zostało usunięte!", 'success');
   }  
-  
+  isValidDate(dueDate: string): boolean {
+   if (!dueDate) return false;
+
+  const [y, m, d] = dueDate.split('-').map(Number);
+  const date = new Date(dueDate);
+
+  return (
+    date.getFullYear() === y &&
+    date.getMonth() + 1 === m &&
+    date.getDate() === d
+  );
+}
+
+isNotPastDate(dueDate: string): boolean {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const date = new Date(dueDate);
+  return date >= today;
+}
 
   
 }
