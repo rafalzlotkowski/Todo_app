@@ -9,7 +9,6 @@ export class TodoService {
   private todos: TodoModel[] = [];
   private nextId: number = 1;
   message: string | null = null;  
-  
   constructor() {
     const data= localStorage.getItem('todos') 
       if(data) {
@@ -76,6 +75,7 @@ export class TodoService {
     this.notyfication("Zadanie zostało usunięte !");
 
   }  
+  
 
   
 }
