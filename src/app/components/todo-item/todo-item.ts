@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, Output,EventEmitter, output } from '@angular/core';
 import{ FormsModule } from '@angular/forms';
 import { RouterModule } from "@angular/router";
+import {  TodoModels as TodoModel } from '../../models/todo.models';
 
 
 
@@ -14,15 +15,15 @@ import { RouterModule } from "@angular/router";
   styleUrl: './todo-item.css',
 })
 export class TodoItemComponent {
-  @Input() todo!: any
+  @Input() todo!: TodoModel;
   @Input() add = new EventEmitter<{id: number, title: string, description:string, dueDate?:string }>();
-  @Output() toggle = new EventEmitter <number>;
+  @Output() toggle = new EventEmitter <TodoModel>;
   @Output() delete = new EventEmitter <number>;
   @Output() edit = new EventEmitter<any>();
   @Output() select = new EventEmitter<number>();
 
   onToggleComplete() {
-  this.toggle.emit(this.todo.id);
+  this.toggle.emit(this.todo);
   }
 
   deleteitem() {

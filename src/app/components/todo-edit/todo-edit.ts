@@ -53,11 +53,11 @@ onSave() {
       this.todo.title.trim(),
       this.todo.description.trim(),
       this.todo.dueDate
-    );
-
+    ).subscribe(() => {
     this.todoService.notyfication('Zapisano zmiany', 'success');
     this.router.navigate(['/']);
-  }
+  });
+}
   
 
 onCancel() {

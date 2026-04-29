@@ -1,7 +1,8 @@
 import { Component, Input, Output,EventEmitter } from '@angular/core';
-import { TodoModels } from '../../models/todo.models';
+import { TodoModels  } from '../../models/todo.models';
 import { TodoItemComponent } from '../todo-item/todo-item';
 import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-todo-list',
@@ -13,7 +14,7 @@ export class TodoListComponent {
 
   @Input() todos: TodoModels[] = [];
 
-  @Output() toggle = new EventEmitter<number>();
+  @Output() toggle = new EventEmitter<TodoModels>();
   @Output() delete = new EventEmitter<number>();
   @Output() select = new EventEmitter<number>();
   @Output() edit = new EventEmitter<any>();

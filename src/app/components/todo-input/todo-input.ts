@@ -34,7 +34,7 @@ export class TodoInputComponent {
     this.todoService.notyfication('Data nie może być z przeszłości !','error');
     return;
     }
-  
+    console.log('Dodawanie zadania:' )
     this.add.emit({
       title: this.title,
       description: this.description,

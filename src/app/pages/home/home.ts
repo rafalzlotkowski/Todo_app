@@ -3,11 +3,14 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TodoInputComponent } from '../../components/todo-input/todo-input';
 import { TodoListComponent } from '../../components/todo-list/todo-list';
-import { TodoService } from '../../services/todo.service';
 import { TodoModels as TodoModel } from '../../models/todo.models';
+import { TodoService } from '../../services/todo.service';
+import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-home',
+  standalone: true,
   imports: [FormsModule,
     CommonModule,
     TodoInputComponent,
@@ -18,46 +21,55 @@ import { TodoModels as TodoModel } from '../../models/todo.models';
   styleUrl: './home.css',
 })
 export class Home {
-  constructor(private todoService: TodoService) {}
-  
-    get todos() {
-      return this.todoService.getTodos();
-    }
+  todos$: Observable<TodoModel[]>;
+
+constructor(private todoService: TodoService) {
+  this.todos$ = this.todoService.getTodos();
+}
   
     
 
-    onAddTodo(title: string, description: string,dueDate?: string) {
-      if(!this){
+    onAddTodo(title: string, description: string, dueDate?: string) {
+  console.log('home dodanie zadania');
 
-      }
-      this.todoService.addTodo(title, description,dueDate);
-    }
+  this.todoService.addTodo(title, description, dueDate)
+    .subscribe(res => {
+      console.log('Dodano:', res);
+    });
+}
   
-    ontoggleTodo(id: number) {
-      this.todoService.toggleCompleted(id);
-    }
+    ontoggleTodo(todo: TodoModel) {
+      this.todoService.toggleCompleted(todo.id, !todo.completed).subscribe();
+   }
   
     onDeleteTodo(id: number) {
-      this.todoService.deleteTodo(id);
+      this.todoService.deleteTodo(id)
+      .subscribe();
     }
   
     selectedTodo: TodoModel | null = null;
   
   onSelectTodo(id: number) {
-    this.selectedTodo = this.todoService.getTodoById(id) || null;
-  }
+    this.todoService.getTodoById(id).subscribe(todo => {
+    this.selectedTodo = todo;
+  });
+}
   
   
   onEditTodo(todo: any) {
     this.selectedTodo = { ...todo }; 
   }
    onSaveEdit(todo: any) {
-    this.todoService.editTodo(todo.id, todo.title, todo.description,todo.dueDate);
+  this.todoService.editTodo(
+    todo.id,
+    todo.title,
+    todo.description,
+    todo.dueDate
+  ).subscribe(() => {
     this.selectedTodo = null;
-  }
+  });
+}
   onediting(todo: any){
-    this.todoService.editTodo(todo.id,todo.title,todo.description,todo.dueDate);
-    this.selectedTodo
   }
   onCancelEdit() {
     this.selectedTodo = null;

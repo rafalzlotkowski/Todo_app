@@ -11,6 +11,7 @@
 
 
   <app-todo-list
+    *ngIf="todos$ | async as todos"
     [todos]="todos"
     (toggle)="ontoggleTodo($event)"
     (delete)="onDeleteTodo($event)"
