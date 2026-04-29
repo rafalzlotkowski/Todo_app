@@ -26,8 +26,6 @@ export class TodoService {
     }, 1000);
   }
   
-
-
   getTodos(): TodoModel[] {
     return this.todos;
   }
