@@ -48,7 +48,14 @@ export class TodoService {
       this.loadTodos(); 
     })
   );
-}
+} 
+
+  sortTodos(filter: string) {
+    console.log(filter)
+    this.http.get<TodoModel[]>(`${this.apiUrl}/todos?filter=${filter}`)
+    .subscribe(todos => this.todosSubject.next(todos));
+
+  }
 
   loadTodos() {
     this.http.get<TodoModel[]>(`${this.apiUrl}/todos`)

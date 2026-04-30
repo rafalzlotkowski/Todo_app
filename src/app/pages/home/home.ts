@@ -21,6 +21,7 @@ import { Observable } from 'rxjs';
   styleUrl: './home.css',
 })
 export class Home {
+  
   todos$: Observable<TodoModel[]>;
 
 constructor(private todoService: TodoService) {
@@ -55,7 +56,9 @@ constructor(private todoService: TodoService) {
     this.selectedTodo = todo;
   });
 }
-  
+  onfilterChange(filter: string) {
+  this.todoService.sortTodos(filter);
+}
   
   onEditTodo(todo: any) {
     this.selectedTodo = { ...todo }; 
