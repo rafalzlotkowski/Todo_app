@@ -67,22 +67,41 @@ app.post('/todos', (req, res) => {
     res.json(newTodo);
 });
 
+
 app.patch('/todos/:id', (req, res) => {
     const data = readData();
     const id = Number(req.params.id);
 
-    const todo = data.todos.find(t => t.id === id );
+    const todo = data.todos.find(t => t.id === id);
+
     if (!todo) {
         return res.status(404).json({ error: 'Todo not found' });
     }
-    if (!title || title.trim() ==='') {
-        return res.status(400).json({ error: 'Title is required'});
-    }
-    if(dueDate && isNaN(Date.parse(dueDate))) {
-        return res.status(400).json({ error: 'Invalid due date format' });
+
+    const { title, dueDate, description, completed } = req.body;
+
+    if (title !== undefined) {
+        if (typeof title !== 'string' || title.trim() === '') {
+            return res.status(400).json({ error: 'Title cannot be empty' });
+        }
+        todo.title = title;
     }
 
-    Object.assign(todo, req.body);
+    if (description !== undefined) {
+        todo.description = description;
+    }
+
+    if (dueDate !== undefined) {
+        if (dueDate && isNaN(Date.parse(dueDate))) {
+            return res.status(400).json({ error: 'Invalid due date format' });
+        }
+        todo.dueDate = dueDate;
+    }
+
+    if (completed !== undefined) {
+        todo.completed = completed;
+    }
+
     writeData(data);
     res.json(todo);
 });
