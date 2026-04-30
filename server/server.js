@@ -18,13 +18,21 @@ function writeData(data) {
 
 app.get('/todos', (req, res) => {
     const data = readData();
-    res.json(data.todos);
+    const filter = req.query.filter;
+
+    let todos = data.todos;
+
+    if (filter === 'completed') {
+        todos = todos.filter(t => t.completed);
+    } else if (filter === 'incompleted') {
+        todos = todos.filter(t => !t.completed);
+    }
+    res.json(todos);
 });
 
 app.get('/todos/:id', (req, res) => {
     const data = readData();
     const id = Number(req.params.id);
-
     const todo = data.todos.find(t => t.id === id );
     if (!todo){
         return res.status(404).json({error: ' Todo not found'})

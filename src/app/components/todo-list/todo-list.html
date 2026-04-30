@@ -1,7 +1,11 @@
 <div class="space-y-4">
-    <p class="text-2xl text-center"></p>
-  @for (todo of todos; track todo.id) {
-      
+    <p class="text-2xl text-center">Lista zadań</p>
+    <select class="w-full p-2 border border-gray-300 rounded-lg" (change)="onFilterChange($event)">
+        <option value="all">Wszystkie</option>
+        <option value="completed">Zakończone</option>
+        <option value="incomplete">Niezakończone</option>
+    </select>
+  @for (todo of todos; track todo.id) { 
     <div class="p-1 bg-gray-300 rounded-xl shadow-lg mb-2">
       <app-todo-item
         [todo]="todo"
