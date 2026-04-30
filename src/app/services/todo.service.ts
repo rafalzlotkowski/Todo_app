@@ -101,7 +101,7 @@ deleteTodo(id: number): Observable<void> {
   const date = new Date(dueDate);
 
   return (
-    date.getFullYear() === y &&
+    date.getFullYear() === y && y >= 1000 && y <= 9999 &&
     date.getMonth() + 1 === m &&
     date.getDate() === d
   );
