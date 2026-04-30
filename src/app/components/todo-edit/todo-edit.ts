@@ -25,15 +25,15 @@ constructor(
     private router: Router
   ) {}
 
-  ngOnInit() {
+ngOnInit() {
   const id = Number(this.route.snapshot.paramMap.get('id'));
-  const original = this.todoService.getTodoById(id);
+  console.log('ID z route:', id);
 
-  if (original) {
-    this.todo = { ...original }; 
-  }
+  this.todoService.getTodoById(id).subscribe((original) => {
+    console.log('TODO z API:', original);
+    this.todo = { ...original };
+  });
 }
-
 onSave() {
   if (!this.todo.title.trim()) {
       this.todoService.notyfication('Tytuł nie może być pusty', 'error');

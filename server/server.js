@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
+const { get } = require('http');
 
 const app = express();
 app.use(cors());
@@ -20,9 +21,26 @@ app.get('/todos', (req, res) => {
     res.json(data.todos);
 });
 
+app.get('/todos/:id', (req, res) => {
+    const data = readData();
+    const id = Number(req.params.id);
+
+    const todo = data.todos.find(t => t.id === id );
+    if (!todo){
+        return res.status(404).json({error: ' Todo not found'})
+    }
+    res.json(todo);
+});
+
 app.post('/todos', (req, res) => {
     const data = readData();
     const { title, description, dueDate } = req.body;
+    if (!title || title.trim() ==='') {
+        return res.status(400).json({ error: 'Title is required'});
+    }
+    if(dueDate && isNaN(Date.parse(dueDate))) {
+        return res.status(400).json({ error: 'Invalid due date format' });
+    }
 
     const nextId = data.todos.length > 0
         ? data.todos[data.todos.length - 1].id + 1
@@ -31,8 +49,8 @@ app.post('/todos', (req, res) => {
     const newTodo = {
         id: nextId,
         title,
-        description,
-        dueDate,
+        description: description || '',
+        dueDate: dueDate || null,
         completed: false
     };
 
@@ -48,6 +66,12 @@ app.patch('/todos/:id', (req, res) => {
     const todo = data.todos.find(t => t.id === id );
     if (!todo) {
         return res.status(404).json({ error: 'Todo not found' });
+    }
+    if (!title || title.trim() ==='') {
+        return res.status(400).json({ error: 'Title is required'});
+    }
+    if(dueDate && isNaN(Date.parse(dueDate))) {
+        return res.status(400).json({ error: 'Invalid due date format' });
     }
 
     Object.assign(todo, req.body);

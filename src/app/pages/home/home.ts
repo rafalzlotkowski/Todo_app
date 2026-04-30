@@ -24,13 +24,14 @@ export class Home {
   todos$: Observable<TodoModel[]>;
 
 constructor(private todoService: TodoService) {
-  this.todos$ = this.todoService.getTodos();
+  this.todos$ = this.todoService.todos$;  
 }
-  
+  ngOnInit() {
+    this.todoService.loadTodos();
+  }
     
 
     onAddTodo(title: string, description: string, dueDate?: string) {
-  console.log('home dodanie zadania');
 
   this.todoService.addTodo(title, description, dueDate)
     .subscribe(res => {

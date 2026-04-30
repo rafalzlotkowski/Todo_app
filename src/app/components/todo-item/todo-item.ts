@@ -22,6 +22,7 @@ export class TodoItemComponent {
   @Output() edit = new EventEmitter<any>();
   @Output() select = new EventEmitter<number>();
 
+
   onToggleComplete() {
   this.toggle.emit(this.todo);
   }
