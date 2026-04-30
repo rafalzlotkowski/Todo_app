@@ -14,7 +14,7 @@ import { TodoService } from '../../services/todo.service';
   styleUrl: './todo-edit.css',
 })
 export class TodoEdit {
-  todo!: any
+  todo: any = { title: '', description: '', dueDate: '' };
 
   @Output() save = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<void>();
@@ -25,25 +25,50 @@ constructor(
     private router: Router
   ) {}
 
-  ngOnInit() {
+ngOnInit() {
   const id = Number(this.route.snapshot.paramMap.get('id'));
-  const original = this.todoService.getTodoById(id);
+  console.log('ID z route:', id);
 
-  if (original) {
-    this.todo = { ...original }; // ← KOPIA, nie oryginał
-  }
+  this.todoService.getTodoById(id).subscribe((original) => {
+    console.log('TODO z API:', original);
+    this.todo = { ...original };
+  });
 }
-
 onSave() {
-  this.todoService.editTodo(
-    this.todo.id,
-    this.todo.title.trim(),
-    this.todo.description.trim()
-  );
-  this.router.navigate(['/']);
-  }
+  if (!this.todo.title.trim()) {
+      this.todoService.notyfication('Tytuł nie może być pusty', 'error');
+      return;
+    }
+    if ( !this.todoService.isValidDate(this.todo.dueDate)) {
+    this.todoService.notyfication('Niepoprawna data (format DD-MM-RRRR)','error');
+    return;
+    }
+    if ( !this.todoService.isNotPastDate(this.todo.dueDate)) {
+    this.todoService.notyfication('Data nie może być z przeszłości !','error');
+    return;
+    }
+
+    this.todoService.editTodo(
+      this.todo.id,
+      this.todo.title.trim(),
+      this.todo.description.trim(),
+      this.todo.dueDate
+    ).subscribe(() => {
+    this.todoService.notyfication('Zapisano zmiany', 'success');
+    this.router.navigate(['/']);
+  });
+}
+  
 
 onCancel() {
+  const confirmed = confirm(
+      "Czy na pewno chcesz odrzucić zmiany ?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
+  this.todoService.notyfication('Zmiany odrzucone ', 'success');
   this.router.navigate(['/']); 
 }
 

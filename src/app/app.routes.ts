@@ -4,5 +4,10 @@ import { TodoEdit } from './components/todo-edit/todo-edit';
 
 export const routes: Routes = [
     {path: '',component:Home},
-    {path: 'edit/:id', component: TodoEdit},
+    {
+    path: 'edit/:id',
+    component: TodoEdit
+    },
+    { path: '**', component: Home }
+
 ];
