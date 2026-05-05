@@ -1,4 +1,11 @@
-<div class="bg-gray-400 p-6 rounded-xl shadow-lg space-y-4">
+
+<div  [ngClass]="getclasses(todo)" class=" p-6 rounded-xl shadow-lg space-y-4">
+    @if(getStatus(todo)=== 'upcoming'){
+        <p class="font-semibold">Zbliża się termin wykonania zadania !</p>
+    }
+    @if(getStatus(todo) === 'expired'){
+        <p class="font-semibold">Termin minał !</p>
+    }
     
     <button (click)="onToggleComplete()  " >Zadanie: {{ todo.title }}</button>
     @if (todo.description) {

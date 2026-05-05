@@ -3,7 +3,8 @@ import { TodoModels as TodoModel } from '../models/todo.models';
 import { RouterLink } from '@angular/router';
 import { isValidDate } from 'rxjs/internal/util/isDate';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,7 @@ export class TodoService {
   }
   private todosSubject = new BehaviorSubject<TodoModel[]>([]);
   todos$ = this.todosSubject.asObservable();
-  notyfication(message: string, status: 'success' | 'error' = 'success') {
+  notification(message: string, status: 'success' | 'error' = 'success') {
     this.message = message;
     this.status = status;
     
@@ -28,7 +29,9 @@ export class TodoService {
     }, 1000);
   }
   getTodos(): Observable<TodoModel[]> {
-    return this.http.get<TodoModel[]>(`${this.apiUrl}/todos`);
+    return this.http.get<TodoModel[]>(`${this.apiUrl}/todos`)
+    
+    ;
   }
  
   getTodoById(id: number): Observable<TodoModel> {
@@ -44,7 +47,7 @@ export class TodoService {
     };
     return this.http.post<TodoModel>(`${this.apiUrl}/todos`, newTodo).pipe(
     tap(() => {
-      this.notyfication("Zadanie zostało dodane!", 'success');
+      this.notification("Zadanie zostało dodane!", 'success');
       this.loadTodos(); 
     })
   );
@@ -52,15 +55,18 @@ export class TodoService {
 
   sortTodos(filter: string) {
     console.log(filter)
+    
     this.http.get<TodoModel[]>(`${this.apiUrl}/todos?filter=${filter}`)
     .subscribe(todos => this.todosSubject.next(todos));
+    error: () => this.notification('Błąd podczas sortowania', 'error')
 
   }
 
-  loadTodos() {
-    this.http.get<TodoModel[]>(`${this.apiUrl}/todos`)
-    .subscribe(todos => this.todosSubject.next(todos));
-  }
+  loadTodos(): Observable<TodoModel[]> {
+  return this.http.get<TodoModel[]>(`${this.apiUrl}/todos`).pipe(
+    tap(todos => this.todosSubject.next(todos))
+  );
+}
   
   editTodo(id:number,title: string, description:string, dueDate?:string): Observable<TodoModel> {
     const updatedTodo: Partial<TodoModel> = {
@@ -92,14 +98,19 @@ export class TodoService {
     );
   }
 
+  
 
-deleteTodo(id: number): Observable<void> {
-  return this.http.delete<void>(`${this.apiUrl}/todos/${id}`).pipe(
-    tap(() => {
-      this.loadTodos(); 
-    })
-  );
-}
+
+  deleteTodo(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/todos/${id}`).pipe(
+      tap(() => {
+        this.loadTodos(); 
+      })
+    );
+  }
+
+
+ 
   
   isValidDate(dueDate: string): boolean {
    if (!dueDate) return false;
@@ -112,15 +123,37 @@ deleteTodo(id: number): Observable<void> {
     date.getMonth() + 1 === m &&
     date.getDate() === d
   );
-}
+  }
 
-isNotPastDate(dueDate: string): boolean {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  isNotPastDate(dueDate: string): boolean {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-  const date = new Date(dueDate);
-  return date >= today;
-}
+    const date = new Date(dueDate);
+    return date >= today;
+  }
+
+  notifyUpCommingTodos(todo: TodoModel): string  {
+    const today = new Date();
+    today.setHours(0,0,0,0)
+    const endDate = new Date(todo.dueDate!);
+    endDate.setHours(0,0,0,0)
+    const future = new Date(today);
+    future.setDate(today.getDate()+2)
+    const status = todo.completed!;
+    if ( !status && endDate < today ){
+    return 'expired';
+    }
+    if( !status && endDate < future ){
+      return 'upcoming';
+    }
+    
+    return 'ok';
+    
+
+  }
+  
+  
 
   
 }

@@ -23,15 +23,15 @@ export class TodoInputComponent {
 
   submit(form :any) {
     if (!this.title.trim()) {
-    this.todoService.notyfication("Niepoprawne zadanie !" ,'error');
+    this.todoService.notification("Niepoprawne zadanie !" ,'error');
     return;
   }
   if ( !this.todoService.isValidDate(this.dueDate)) {
-    this.todoService.notyfication('Niepoprawna data (format DD-MM-RRRR)','error');
+    this.todoService.notification('Niepoprawna data (format DD-MM-RRRR)','error');
     return;
   }
    if ( !this.todoService.isNotPastDate(this.dueDate)) {
-    this.todoService.notyfication('Data nie może być z przeszłości !','error');
+    this.todoService.notification('Data nie może być z przeszłości !','error');
     return;
     }
     this.add.emit({

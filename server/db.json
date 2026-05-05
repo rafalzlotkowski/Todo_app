@@ -1,10 +1,17 @@
 {
   "todos": [
     {
-      "id": 1,
-      "title": "sadsasd",
+      "id": 2,
+      "title": "zadanie2",
       "description": "",
-      "dueDate": "2222-02-22",
+      "dueDate": "2026-05-06",
+      "completed": false
+    },
+    {
+      "id": 1,
+      "title": "zadanie3",
+      "description": "",
+      "dueDate": "2026-05-09",
       "completed": false
     }
   ]
