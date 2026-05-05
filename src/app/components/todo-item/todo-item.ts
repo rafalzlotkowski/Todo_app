@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, Output,EventEmitter, output, SimpleChanges } from '@angular/core';
-import{ FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from "@angular/router";
 import {  TodoModels as TodoModel } from '../../models/todo.models';
 import { TodoService } from '../../services/todo.service';
@@ -22,7 +22,7 @@ export class TodoItemComponent {
   @Output() delete = new EventEmitter <number>;
   @Output() edit = new EventEmitter<any>();
   @Output() select = new EventEmitter<number>();
-
+  
   constructor(private todoservice: TodoService ){};
   getclasses(todo:TodoModel){
   const status = this.todoservice.notifyUpCommingTodos(todo);
@@ -32,7 +32,9 @@ export class TodoItemComponent {
       'bg-gray-500': status === 'ok',
     }
   }
-  
+  getStatus(todo: TodoModel): string {
+  return this.todoservice.notifyUpCommingTodos(todo);
+}
   
 
   onToggleComplete() {

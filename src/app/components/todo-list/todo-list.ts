@@ -20,6 +20,7 @@ export class TodoListComponent {
   @Output() edit = new EventEmitter<any>();
   @Output() filterChange = new EventEmitter<string>();
 
+
   onFilterChange(event: Event) {
   const target = event.target as HTMLSelectElement;
   const value = target.value;

@@ -3,7 +3,7 @@ import { TodoModels as TodoModel } from '../models/todo.models';
 import { RouterLink } from '@angular/router';
 import { isValidDate } from 'rxjs/internal/util/isDate';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap } from 'rxjs';
 import { Title } from '@angular/platform-browser';
 
 @Injectable({
@@ -29,7 +29,9 @@ export class TodoService {
     }, 1000);
   }
   getTodos(): Observable<TodoModel[]> {
-    return this.http.get<TodoModel[]>(`${this.apiUrl}/todos`);
+    return this.http.get<TodoModel[]>(`${this.apiUrl}/todos`)
+    
+    ;
   }
  
   getTodoById(id: number): Observable<TodoModel> {
@@ -53,15 +55,18 @@ export class TodoService {
 
   sortTodos(filter: string) {
     console.log(filter)
+    
     this.http.get<TodoModel[]>(`${this.apiUrl}/todos?filter=${filter}`)
     .subscribe(todos => this.todosSubject.next(todos));
+    error: () => this.notification('Błąd podczas sortowania', 'error')
 
   }
 
-  loadTodos() {
-    this.http.get<TodoModel[]>(`${this.apiUrl}/todos`)
-    .subscribe(todos => this.todosSubject.next(todos));
-  }
+  loadTodos(): Observable<TodoModel[]> {
+  return this.http.get<TodoModel[]>(`${this.apiUrl}/todos`).pipe(
+    tap(todos => this.todosSubject.next(todos))
+  );
+}
   
   editTodo(id:number,title: string, description:string, dueDate?:string): Observable<TodoModel> {
     const updatedTodo: Partial<TodoModel> = {

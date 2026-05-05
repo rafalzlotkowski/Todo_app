@@ -49,6 +49,7 @@ app.post('/todos', (req, res) => {
     if(dueDate && isNaN(Date.parse(dueDate))) {
         return res.status(400).json({ error: 'Invalid due date format' });
     }
+    
 
     const nextId = Math.max(0, ...data.todos.map(t => t.id)) + 1;
 
