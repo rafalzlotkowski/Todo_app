@@ -36,15 +36,15 @@ ngOnInit() {
 }
 onSave() {
   if (!this.todo.title.trim()) {
-      this.todoService.notyfication('Tytuł nie może być pusty', 'error');
+      this.todoService.notification('Tytuł nie może być pusty', 'error');
       return;
     }
     if ( !this.todoService.isValidDate(this.todo.dueDate)) {
-    this.todoService.notyfication('Niepoprawna data (format DD-MM-RRRR)','error');
+    this.todoService.notification('Niepoprawna data (format DD-MM-RRRR)','error');
     return;
     }
     if ( !this.todoService.isNotPastDate(this.todo.dueDate)) {
-    this.todoService.notyfication('Data nie może być z przeszłości !','error');
+    this.todoService.notification('Data nie może być z przeszłości !','error');
     return;
     }
 
@@ -54,7 +54,7 @@ onSave() {
       this.todo.description.trim(),
       this.todo.dueDate
     ).subscribe(() => {
-    this.todoService.notyfication('Zapisano zmiany', 'success');
+    this.todoService.notification('Zapisano zmiany', 'success');
     this.router.navigate(['/']);
   });
 }
@@ -68,7 +68,7 @@ onCancel() {
     if (!confirmed) {
       return;
     }
-  this.todoService.notyfication('Zmiany odrzucone ', 'success');
+  this.todoService.notification('Zmiany odrzucone ', 'success');
   this.router.navigate(['/']); 
 }
 

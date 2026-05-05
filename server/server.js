@@ -50,9 +50,7 @@ app.post('/todos', (req, res) => {
         return res.status(400).json({ error: 'Invalid due date format' });
     }
 
-    const nextId = data.todos.length > 0
-        ? data.todos[data.todos.length - 1].id + 1
-        : 1;
+    const nextId = Math.max(0, ...data.todos.map(t => t.id)) + 1;
 
     const newTodo = {
         id: nextId,

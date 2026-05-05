@@ -1,4 +1,5 @@
-<div class="bg-gray-400 p-6 rounded-xl shadow-lg space-y-4">
+
+<div  [ngClass]="getclasses(todo)" class=" p-6 rounded-xl shadow-lg space-y-4">
     
     <button (click)="onToggleComplete()  " >Zadanie: {{ todo.title }}</button>
     @if (todo.description) {
@@ -10,7 +11,7 @@
         [checked]="todo.completed" 
         (change)="onToggleComplete()" 
         class="size-5">    
-    <button [routerLink]="['/edit',todo.id]" class="bg-yellow-400 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg">Edit</button>
+    <button [routerLink]="['/edit',todo.id]" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg">Edit</button>
     <button (click)="deleteitem()" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg ">Delete </button>
        
 </div>
