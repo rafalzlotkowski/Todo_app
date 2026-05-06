@@ -4,22 +4,15 @@
       "id": 2,
       "title": "zadanie54",
       "description": "",
-      "dueDate": "2026-05-06",
-      "completed": true
+      "dueDate": "2222-09-25",
+      "completed": false
     },
     {
       "id": 1,
       "title": "zadanie3",
       "description": "",
-      "dueDate": "2026-05-09",
+      "dueDate": "2026-05-06",
       "completed": false
-    },
-    {
-      "id": 3,
-      "title": "zadanie3",
-      "description": "",
-      "dueDate": "2026-05-09",
-      "completed": true
     },
     {
       "id": 4,
