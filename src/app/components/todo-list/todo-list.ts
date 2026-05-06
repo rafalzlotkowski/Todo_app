@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './todo-list.css',
 })
 export class TodoListComponent {
-
+  constructor(){};
   @Input() todos: TodoModels[] = [];
 
   @Output() toggle = new EventEmitter<TodoModels>();

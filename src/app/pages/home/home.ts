@@ -24,55 +24,55 @@ export class Home {
   
   todos$: Observable<TodoModel[]>;
 
-constructor(private todoService: TodoService) {
-  this.todos$ = this.todoService.todos$;  
-}
+  constructor(private todoService: TodoService) {
+    this.todos$ = this.todoService.todos$;  
+  }
   ngOnInit() {
     this.todoService.loadTodos();
   }
     
 
-    onAddTodo(title: string, description: string, dueDate?: string) {
+  onAddTodo(title: string, description: string, dueDate?: string) {
 
-  this.todoService.addTodo(title, description, dueDate)
-    .subscribe(res => {
-      console.log('Dodano:', res);
-    });
-}
+    this.todoService.addTodo(title, description, dueDate)
+      .subscribe(res => {
+        console.log('Dodano:', res);
+      });
+  }
   
-    ontoggleTodo(todo: TodoModel) {
-      this.todoService.toggleCompleted(todo.id, !todo.completed).subscribe();
-   }
+  ontoggleTodo(todo: TodoModel) {
+    this.todoService.toggleCompleted(todo.id, !todo.completed).subscribe();
+  }
   
-    onDeleteTodo(id: number) {
-      this.todoService.deleteTodo(id)
-      .subscribe();
-    }
+  onDeleteTodo(id: number) {
+    this.todoService.deleteTodo(id)
+    .subscribe();
+  }
   
     selectedTodo: TodoModel | null = null;
   
   onSelectTodo(id: number) {
     this.todoService.getTodoById(id).subscribe(todo => {
-    this.selectedTodo = todo;
-  });
-}
+      this.selectedTodo = todo;
+    });
+  }
   onfilterChange(filter: string) {
-  this.todoService.sortTodos(filter);
-}
+    this.todoService.sortTodos(filter).subscribe();
+  }
   
   onEditTodo(todo: any) {
     this.selectedTodo = { ...todo }; 
   }
-   onSaveEdit(todo: any) {
-  this.todoService.editTodo(
-    todo.id,
-    todo.title,
-    todo.description,
-    todo.dueDate
-  ).subscribe(() => {
-    this.selectedTodo = null;
-  });
-}
+  onSaveEdit(todo: any) {
+    this.todoService.editTodo(
+      todo.id,
+      todo.title,
+      todo.description,
+      todo.dueDate
+    ).subscribe(() => {
+      this.selectedTodo = null;
+    });
+  }
   onediting(todo: any){
   }
   onCancelEdit() {
