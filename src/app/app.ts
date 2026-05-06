@@ -18,6 +18,10 @@ import { CommonModule } from '@angular/common';
 export class App {
     constructor(private todoService: TodoService) {}
 
+    ngOnInit() {
+    this.todoService.loadTodos().subscribe();
+    }
+
 get currentMessage() {
       return this.todoService.message;
     }
