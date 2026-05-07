@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TodoService } from '../../services/todo.service';
+import { Priority } from '../../models/todo.models';
 
 
 
@@ -16,9 +17,12 @@ export class TodoInputComponent {
   title = '';
   description = '';
   dueDate ='';
+  priority: 'low' | 'medium' | 'high' = 'medium';
   constructor(private todoService: TodoService) {}
-  @Output() add = new EventEmitter<{ title: string; description: string ;dueDate: string }>();
+  @Output() add = new EventEmitter<{ title: string; description: string ;dueDate: string; priority: Priority }>();
   @Output() currentmessage = new EventEmitter<string>();
+  
+
   
 
   submit(form :any) {
@@ -37,12 +41,14 @@ export class TodoInputComponent {
     this.add.emit({
       title: this.title,
       description: this.description,
+      priority: this.priority,
       dueDate: this.dueDate
     });
 
   this.title='',
   this.description='',
   this.dueDate = ''
+  
 
 }
 
