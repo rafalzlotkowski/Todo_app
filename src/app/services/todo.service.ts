@@ -58,7 +58,7 @@ export class TodoService {
   } 
 
   sortTodos(filter: string): Observable<TodoModel[]> {
-    console.log(filter)
+    console.log(filter);
   return this.http.get<TodoModel[]>(`${this.apiUrl}/todos?filter=${filter}`).pipe(
     tap(todos => this.todosSubject.next(todos)),
     catchError(err => {
@@ -154,7 +154,7 @@ export class TodoService {
     return date >= today;
   }
 
-  notifyUpCommingTodos(todo: TodoModel): string  {
+  getTodoStatus(todo: TodoModel,priority: Priority): string  {
     const today = new Date();
     today.setHours(0,0,0,0)
     const endDate = new Date(todo.dueDate!);
@@ -164,9 +164,14 @@ export class TodoService {
     const status = todo.completed!;
     if ( !status && endDate < today ){
     return 'expired';
-    }
-    if( !status && endDate < future ){
+    }else if( !status && endDate < future ){
       return 'upcoming';
+    }else if (priority === 'low'){
+      return 'lowpriority'
+    }else if (priority === 'medium'){
+      return 'mediumpriority'
+    }else if (priority === 'high'){
+      return 'highpriority'
     }
     
     return 'ok';

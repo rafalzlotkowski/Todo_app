@@ -18,7 +18,7 @@ function writeData(data) {
 
 app.get('/todos', (req, res) => {
     const data = readData();
-    const filter = (req.query.filter || '').toLowerCase().trim();
+    const filter = (req.query.filter ||'').toLowerCase().trim();
     let todos = data.todos;
 
     if (filter === 'completed') {
