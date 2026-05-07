@@ -25,6 +25,12 @@ app.get('/todos', (req, res) => {
         todos = todos.filter(t => t.completed);
     } else if (filter === 'incomplete') {
         todos = todos.filter(t => !t.completed);
+    }else if (filter === 'low') {
+        todos = todos.filter(t => t.priority === 'low');
+    }else if (filter === 'medium') {
+        todos = todos.filter(t => t.priority === 'medium');
+    }else if (filter === 'high') {
+        todos = todos.filter(t => t.priority === 'high');
     } else if (filter === 'date-asc') {
         todos.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));    
     } else if (filter === 'date-desc') {
