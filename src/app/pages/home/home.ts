@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TodoInputComponent } from '../../components/todo-input/todo-input';
 import { TodoListComponent } from '../../components/todo-list/todo-list';
-import { TodoModels as TodoModel } from '../../models/todo.models';
+import { Priority, TodoModels as TodoModel } from '../../models/todo.models';
 import { TodoService } from '../../services/todo.service';
 import { Observable } from 'rxjs';
 
@@ -32,9 +32,9 @@ export class Home {
   }
     
 
-  onAddTodo(title: string, description: string, dueDate?: string) {
+  onAddTodo(title: string, description: string,priority: Priority , dueDate?: string) {
 
-    this.todoService.addTodo(title, description, dueDate)
+    this.todoService.addTodo(title, description,priority, dueDate)
       .subscribe(res => {
         console.log('Dodano:', res);
       });
@@ -68,6 +68,7 @@ export class Home {
       todo.id,
       todo.title,
       todo.description,
+      todo.priority,
       todo.dueDate
     ).subscribe(() => {
       this.selectedTodo = null;

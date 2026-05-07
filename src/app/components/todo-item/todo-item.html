@@ -12,6 +12,7 @@
         <p>Opis: {{ todo.description }}</p>
     }
     <p>Data zakończenia: {{todo.dueDate | date:'dd.MM.yyyy' }}</p>
+    <p>Priorytet: {{todo.priority}}</p>
     <p>Status: {{ todo.completed ? 'Zakończone' : 'Niezakończone' }}</p>
     <input type="checkbox" 
         [checked]="todo.completed" 

@@ -1,7 +1,9 @@
-import { Component, Input, Output, EventEmitter, input } from '@angular/core';
+import { Component, Input, Output, EventEmitter, input, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TodoService } from '../../services/todo.service';
+import { CommonModule } from '@angular/common';
+
 
 
 
@@ -9,12 +11,13 @@ import { TodoService } from '../../services/todo.service';
 @Component({
   selector: 'app-todo-edit',
   standalone: true,
-  imports: [FormsModule ],
+  imports: [FormsModule,CommonModule],
   templateUrl: './todo-edit.html',
   styleUrl: './todo-edit.css',
 })
 export class TodoEdit {
-  todo: any = { title: '', description: '', dueDate: '' };
+  todo: any = {};
+  priority: 'low' | 'medium' | 'high' = 'medium';
 
   @Output() save = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<void>();
@@ -22,18 +25,21 @@ export class TodoEdit {
 constructor(
     private route: ActivatedRoute,
     private todoService: TodoService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef 
   ) {}
 
 ngOnInit() {
   
   const id = Number(this.route.snapshot.paramMap.get('id'));
   console.log('ID z route:', id);
-  this.todoService.getTodoById(id).subscribe((original) => {
-    console.log('TODO z API:', original);
-    this.todo = { ...original };
-    
+ this.todoService.getTodoById(id).subscribe(original => {
+  this.todo = { ...original };
+
+  setTimeout(() => {
+    this.todo = { ...this.todo };
   });
+});
  
   }
 onSave() {
@@ -49,11 +55,12 @@ onSave() {
     this.todoService.notification('Data nie może być z przeszłości !','error');
     return;
     }
-
+    console.log(this.priority)
     this.todoService.editTodo(
       this.todo.id,
       this.todo.title.trim(),
       this.todo.description.trim(),
+      this.todo.priority,
       this.todo.dueDate
     ).subscribe(() => {
     this.todoService.notification('Zapisano zmiany', 'success');

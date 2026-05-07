@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TodoModels as TodoModel } from '../models/todo.models';
+import { Priority, TodoModels as TodoModel } from '../models/todo.models';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, catchError, Observable, switchMap, tap, throwError } from 'rxjs';
 
@@ -36,16 +36,20 @@ export class TodoService {
     )
   }
   
-  addTodo(title: string, description: string, dueDate?: string): Observable<TodoModel[]>{
+  addTodo(title: string, description: string, priority : Priority ,dueDate?: string): Observable<TodoModel[]>{
     const newTodo: Omit<TodoModel, 'id'> = {
       title,
       description,
       dueDate,
+      priority,
       completed: false
     };
+       console.log(priority)
+
     return this.http.post<TodoModel>(`${this.apiUrl}/todos`, newTodo).pipe(
-    tap(() => this.notification("Zadanie zostało dodane!",'success')),
+    tap(() => this.notification("Zadanie zostało dodane!", 'success')),
     switchMap(() => this.loadTodos()),
+    
     catchError(err => {
         this.notification('Dodawanie zadania nie powiodło się ','error');
         return throwError(() => err)
@@ -58,7 +62,7 @@ export class TodoService {
   return this.http.get<TodoModel[]>(`${this.apiUrl}/todos?filter=${filter}`).pipe(
     tap(todos => this.todosSubject.next(todos)),
     catchError(err => {
-      this.notification('Błąd podczas sortowania','error');
+      this.notification('Błąd podczas sortowania', 'error');
       return throwError(() => err);
     })
   );
@@ -74,18 +78,19 @@ export class TodoService {
     );
   }
   
-  editTodo(id:number,title: string, description:string, dueDate?:string): Observable<TodoModel[]> {
+  editTodo(id:number,title: string, description:string, priority: Priority ,dueDate?:string): Observable<TodoModel[]> {
     const updatedTodo: Partial<TodoModel> = {
   
       title,
       description,
+      priority,
       dueDate
     };
     return this.http.patch<TodoModel>(`${this.apiUrl}/todos/${id}`, updatedTodo).pipe(
     
       switchMap(() => this.loadTodos()),
     
-      catchError(err => {
+    catchError(err => {
         this.notification('Edytowanie nie powiodło się ','error');
         return throwError(() => err)
       })

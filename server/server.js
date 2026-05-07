@@ -45,7 +45,7 @@ app.get('/todos/:id', (req, res) => {
 
 app.post('/todos', (req, res) => {
     const data = readData();
-    const { title, description, dueDate } = req.body;
+    const { title, description, priority ,dueDate } = req.body;
     if (!title || title.trim() ==='') {
         return res.status(400).json({ error: 'Title is required'});
     }
@@ -61,6 +61,7 @@ app.post('/todos', (req, res) => {
         title,
         description: description || '',
         dueDate: dueDate || null,
+        priority: priority,
         completed: false
     };
 
@@ -79,8 +80,8 @@ app.patch('/todos/:id', (req, res) => {
     if (!todo) {
         return res.status(404).json({ error: 'Todo not found' });
     }
-
-    const { title, dueDate, description, completed } = req.body;
+    
+    const { title, dueDate, description,priority, completed } = req.body;
 
     if (title !== undefined) {
         if (typeof title !== 'string' || title.trim() === '') {
@@ -99,10 +100,14 @@ app.patch('/todos/:id', (req, res) => {
         }
         todo.dueDate = dueDate;
     }
+    if (priority !== undefined){
+        todo.priority = priority;
+    }
 
     if (completed !== undefined) {
         todo.completed = completed;
     }
+
 
     writeData(data);
     res.json(todo);

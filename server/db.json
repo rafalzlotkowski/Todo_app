@@ -2,16 +2,18 @@
   "todos": [
     {
       "id": 2,
-      "title": "zadanie54",
+      "title": "zadanie5",
       "description": "",
       "dueDate": "2222-09-25",
+      "priority": "low",
       "completed": false
     },
     {
       "id": 1,
-      "title": "zadanie3",
+      "title": "zadanie31",
       "description": "",
-      "dueDate": "2026-05-06",
+      "dueDate": "2026-05-07",
+      "priority": "medium",
       "completed": false
     },
     {
@@ -19,6 +21,31 @@
       "title": "ds",
       "description": "",
       "dueDate": "2222-02-22",
+      "priority": "medium",
+      "completed": false
+    },
+    {
+      "id": 5,
+      "title": "dsa",
+      "description": "",
+      "dueDate": "2222-02-22",
+      "priority": "medium",
+      "completed": false
+    },
+    {
+      "id": 6,
+      "title": "dsads",
+      "description": "",
+      "dueDate": "2222-02-22",
+      "priority": "medium",
+      "completed": false
+    },
+    {
+      "id": 7,
+      "title": "sad",
+      "description": "",
+      "dueDate": "2222-02-22",
+      "priority": "high",
       "completed": false
     }
   ]

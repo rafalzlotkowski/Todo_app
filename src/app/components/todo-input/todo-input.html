@@ -37,6 +37,15 @@
     class="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-gray-400 outline-none"
     />
   </div>
+  <div>
+    <label class="block text-lg font-semibold text-gray-900">Priorytet</label>
+    <select name="priority" [(ngModel)]="priority" 
+    class="p-2 border border-gray-500 rounded-lg">
+      <option value="low">Niski</option>
+      <option value="medium">Średni</option>
+      <option value="high">wysoki</option>
+    </select>
+  </div>
 
   <button
     type="submit"
