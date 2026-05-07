@@ -2,7 +2,6 @@ import { Component, Input, Output, EventEmitter, input, ChangeDetectorRef } from
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TodoService } from '../../services/todo.service';
-import { CommonModule } from '@angular/common';
 
 
 
@@ -11,7 +10,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-todo-edit',
   standalone: true,
-  imports: [FormsModule,CommonModule],
+  imports: [FormsModule],
   templateUrl: './todo-edit.html',
   styleUrl: './todo-edit.css',
 })
@@ -26,19 +25,18 @@ constructor(
     private route: ActivatedRoute,
     private todoService: TodoService,
     private router: Router,
-    private cdr: ChangeDetectorRef 
+    private cdr: ChangeDetectorRef
+
   ) {}
 
 ngOnInit() {
   
   const id = Number(this.route.snapshot.paramMap.get('id'));
   console.log('ID z route:', id);
- this.todoService.getTodoById(id).subscribe(original => {
+  this.todoService.getTodoById(id).subscribe(original => {
   this.todo = { ...original };
-
-  setTimeout(() => {
-    this.todo = { ...this.todo };
-  });
+  this.cdr.detectChanges();
+  
 });
  
   }
@@ -55,7 +53,6 @@ onSave() {
     this.todoService.notification('Data nie może być z przeszłości !','error');
     return;
     }
-    console.log(this.priority)
     this.todoService.editTodo(
       this.todo.id,
       this.todo.title.trim(),
