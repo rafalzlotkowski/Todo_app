@@ -24,16 +24,26 @@ export class TodoItemComponent {
   @Output() select = new EventEmitter<number>();
   
   constructor(private todoservice: TodoService ){};
-  getclasses(todo:TodoModel){
-  const status = this.todoservice.notifyUpCommingTodos(todo);
-    return{
-      'bg-red-400': status === 'expired',
-      'bg-yellow-300': status === 'upcoming',
-      'bg-gray-500': status === 'ok',
-    }
-  }
-  getStatus(todo: TodoModel): string {
-  return this.todoservice.notifyUpCommingTodos(todo);
+  statusClasses: Record<string, string> = {
+  expired: 'bg-red-400',
+  upcoming: 'bg-yellow-300',
+  lowpriority: 'bg-green-300',
+  mediumpriority: 'bg-orange-300',
+  highpriority: 'bg-blue-400',
+  ok: 'bg-gray-500',
+};
+
+getClass(todo: TodoModel): string {
+  const status = this.todoservice.getTodoStatus(todo, todo.priority);
+  return this.statusClasses[status];
+}
+getTodoState(todo: TodoModel) {
+  const status = this.todoservice.getTodoStatus(todo, todo.priority);
+
+  return {
+    status,
+    className: this.statusClasses[status]
+  };
 }
   
 
