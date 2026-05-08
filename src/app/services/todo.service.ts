@@ -19,8 +19,6 @@ export class TodoService {
 
   private todosSubject = new BehaviorSubject<TodoModel[]>([]);
   todos$ = this.todosSubject.asObservable();
-  
-  
  
   getTodoById(id: number): Observable<TodoModel> {
     return this.http.get<TodoModel>(`${this.apiUrl}/todos/${id}`).pipe(
@@ -90,11 +88,7 @@ export class TodoService {
         return throwError(() => err)
       })
   );
-    
-
   }
-
-
 
   toggleCompleted(id: number, completed: boolean): Observable<TodoModel[]> {
   return this.http.patch<TodoModel>(
@@ -111,9 +105,6 @@ export class TodoService {
     );
   }
 
-  
-
-
   deleteTodo(id: number): Observable<TodoModel[]> {
     return this.http.delete<void>(`${this.apiUrl}/todos/${id}`).pipe(
       
@@ -123,56 +114,5 @@ export class TodoService {
         return throwError(() => err)
       })
     );
-  }
-
-
- 
-  
-  isValidDate(dueDate: string): boolean {
-   if (!dueDate) return false;
-
-  const [y, m, d] = dueDate.split('-').map(Number);
-  const date = new Date(dueDate);
-
-  return (
-    date.getFullYear() === y && y >= 1000 && y <= 9999 &&
-    date.getMonth() + 1 === m &&
-    date.getDate() === d
-  );
-  }
-
-  isNotPastDate(dueDate: string): boolean {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const date = new Date(dueDate);
-    return date >= today;
-  }
-
-  getTodoStatus(todo: TodoModel,priority: Priority): string  {
-    const today = new Date();
-    today.setHours(0,0,0,0)
-    const endDate = new Date(todo.dueDate!);
-    endDate.setHours(0,0,0,0)
-    const future = new Date(today);
-    future.setDate(today.getDate()+2)
-    const status = todo.completed!;
-    if ( status ){
-    return 'checked';
-    }else if ( !status && endDate < today ){
-    return 'expired';
-    }else if( !status && endDate < future ){
-      return 'upcoming';
-    }else if (priority === 'low'){
-      return 'lowpriority'
-    }else if (priority === 'medium'){
-      return 'mediumpriority'
-    }else if (priority === 'high'){
-      return 'highpriority'
-    }
-    
-    return 'ok';
-    
-  }
-  
+  } 
 }

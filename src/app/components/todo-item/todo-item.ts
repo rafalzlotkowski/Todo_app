@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from "@angular/router";
 import {  TodoModels as TodoModel } from '../../models/todo.models';
 import { TodoService } from '../../services/todo.service';
+import { getTodoStatus} from '../../utils/todo.utils';
 
 
 
@@ -35,11 +36,11 @@ export class TodoItemComponent {
 };
 
 getClass(todo: TodoModel): string {
-  const status = this.todoservice.getTodoStatus(todo, todo.priority);
+  const status = getTodoStatus(todo, todo.priority);
   return this.statusClasses[status];
 }
 getTodoState(todo: TodoModel) {
-  const status = this.todoservice.getTodoStatus(todo, todo.priority);
+  const status = getTodoStatus(todo, todo.priority);
 
   return {
     status,
