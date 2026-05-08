@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TodoService } from '../../services/todo.service';
 import { NotificationService } from '../../services/notification-service';
-
+import { isValidDate, isNotPastDate } from '../../utils/todo.utils';
 
 
 
@@ -48,11 +48,11 @@ onSave() {
       this.notification.show('Tytuł nie może być pusty', 'error');
       return;
     }
-    if ( !this.todoService.isValidDate(this.todo.dueDate)) {
+    if (!isValidDate(this.todo.dueDate)) {
     this.notification.show('Niepoprawna data (format DD-MM-RRRR)','error');
     return;
     }
-    if ( !this.todoService.isNotPastDate(this.todo.dueDate)) {
+    if ( !isNotPastDate(this.todo.dueDate)) {
     this.notification.show('Data nie może być z przeszłości !','error');
     return;
     }
