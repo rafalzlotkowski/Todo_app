@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TodoService } from './services/todo.service';
 import { CommonModule } from '@angular/common';
+import { NotificationService } from './services/notification-service';
 
 @Component({
   selector: 'app-root',
@@ -15,24 +16,14 @@ import { CommonModule } from '@angular/common';
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {
-    constructor(private todoService: TodoService) {}
+export class App implements OnInit {
+  private todoService = inject(TodoService);
+  private notificationService = inject(NotificationService);
 
-    ngOnInit() {
+  // Przypisanie następuje od razu, TypeScript jest zadowolony
+  notification$ = this.notificationService.notification$;
+
+  ngOnInit() {
     this.todoService.loadTodos().subscribe();
-    }
-
-get currentMessage() {
-      return this.todoService.message;
-    }
-    get status(){
-      return this.todoService.status;
-    }
-
-
-
-
-
-  
+  }
 }
-

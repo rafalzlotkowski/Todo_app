@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TodoService } from '../../services/todo.service';
 import { Priority } from '../../models/todo.models';
+import {NotificationService} from '../../services/notification-service';
 
 
 
@@ -18,7 +19,10 @@ export class TodoInputComponent {
   description = '';
   dueDate ='';
   priority: 'low' | 'medium' | 'high' = 'medium';
-  constructor(private todoService: TodoService) {}
+  constructor(private todoService: TodoService,
+    private notification: NotificationService
+
+  ) {}
   @Output() add = new EventEmitter<{ title: string; description: string ;dueDate: string; priority: Priority }>();
   @Output() currentmessage = new EventEmitter<string>();
   
@@ -27,15 +31,15 @@ export class TodoInputComponent {
 
   submit(form :any) {
     if (!this.title.trim()) {
-    this.todoService.notification("Niepoprawne zadanie !" ,'error');
+    this.notification.show("Niepoprawne zadanie !" ,'error');
     return;
   }
   if ( !this.todoService.isValidDate(this.dueDate)) {
-    this.todoService.notification('Niepoprawna data (format DD-MM-RRRR)','error');
+    this.notification.show('Niepoprawna data (format DD-MM-RRRR)','error');
     return;
   }
    if ( !this.todoService.isNotPastDate(this.dueDate)) {
-    this.todoService.notification('Data nie może być z przeszłości !','error');
+    this.notification.show('Data nie może być z przeszłości !','error');
     return;
     }
     this.add.emit({

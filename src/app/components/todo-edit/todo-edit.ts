@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, input, ChangeDetectorRef } from
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TodoService } from '../../services/todo.service';
+import { NotificationService } from '../../services/notification-service';
 
 
 
@@ -25,7 +26,9 @@ constructor(
     private route: ActivatedRoute,
     private todoService: TodoService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private notification: NotificationService
+     
 
   ) {}
 
@@ -42,15 +45,15 @@ ngOnInit() {
   }
 onSave() {
   if (!this.todo.title.trim()) {
-      this.todoService.notification('Tytuł nie może być pusty', 'error');
+      this.notification.show('Tytuł nie może być pusty', 'error');
       return;
     }
     if ( !this.todoService.isValidDate(this.todo.dueDate)) {
-    this.todoService.notification('Niepoprawna data (format DD-MM-RRRR)','error');
+    this.notification.show('Niepoprawna data (format DD-MM-RRRR)','error');
     return;
     }
     if ( !this.todoService.isNotPastDate(this.todo.dueDate)) {
-    this.todoService.notification('Data nie może być z przeszłości !','error');
+    this.notification.show('Data nie może być z przeszłości !','error');
     return;
     }
     this.todoService.editTodo(
@@ -60,7 +63,7 @@ onSave() {
       this.todo.priority,
       this.todo.dueDate
     ).subscribe(() => {
-    this.todoService.notification('Zapisano zmiany', 'success');
+    this.notification.show('Zapisano zmiany', 'success');
     this.router.navigate(['/']);
   });
 }
@@ -74,7 +77,7 @@ onCancel() {
     if (!confirmed) {
       return;
     }
-  this.todoService.notification('Zmiany odrzucone ', 'success');
+  this.notification.show('Zmiany odrzucone ', 'success');
   this.router.navigate(['/']); 
 }
 
