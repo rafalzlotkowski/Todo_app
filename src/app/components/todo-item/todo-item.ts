@@ -25,6 +25,7 @@ export class TodoItemComponent {
   
   constructor(private todoservice: TodoService ){};
   statusClasses: Record<string, string> = {
+  checked: 'bg-gray-400',
   expired: 'bg-red-400',
   upcoming: 'bg-yellow-300',
   lowpriority: 'bg-green-300',

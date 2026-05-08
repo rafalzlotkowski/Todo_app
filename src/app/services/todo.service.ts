@@ -2,35 +2,30 @@ import { Injectable } from '@angular/core';
 import { Priority, TodoModels as TodoModel } from '../models/todo.models';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, catchError, Observable, switchMap, tap, throwError } from 'rxjs';
-
+import {NotificationService} from './notification-service';
 @Injectable({
   providedIn: 'root',
+  
 })
 export class TodoService {
   
-  message: string | null = null;  
-  status: 'success' | 'error' | null = null;
+  
   private apiUrl = 'http://localhost:3000';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+    private notification: NotificationService
+  ) {
   }
 
   private todosSubject = new BehaviorSubject<TodoModel[]>([]);
   todos$ = this.todosSubject.asObservable();
-  notification(message: string, status: 'success' | 'error' = 'success') {
-    this.message = message;
-    this.status = status;
-    
-    setTimeout(() => {
-      this.message = null;
-    }, 3000);
-  }
+  
   
  
   getTodoById(id: number): Observable<TodoModel> {
     return this.http.get<TodoModel>(`${this.apiUrl}/todos/${id}`).pipe(
       catchError(err => {
-        this.notification('Pobieranie zadania nie powiodło się ','error');
+        this.notification.show('Pobieranie zadania nie powiodło się ','error');
         return throwError(() => err)
       })
     )
@@ -47,11 +42,11 @@ export class TodoService {
        console.log(priority)
 
     return this.http.post<TodoModel>(`${this.apiUrl}/todos`, newTodo).pipe(
-    tap(() => this.notification("Zadanie zostało dodane!", 'success')),
+    tap(() => this.notification.show("Zadanie zostało dodane!", 'success')),
     switchMap(() => this.loadTodos()),
     
     catchError(err => {
-        this.notification('Dodawanie zadania nie powiodło się ','error');
+        this.notification.show('Dodawanie zadania nie powiodło się ','error');
         return throwError(() => err)
       })
     );
@@ -62,7 +57,7 @@ export class TodoService {
   return this.http.get<TodoModel[]>(`${this.apiUrl}/todos?filter=${filter}`).pipe(
     tap(todos => this.todosSubject.next(todos)),
     catchError(err => {
-      this.notification('Błąd podczas sortowania', 'error');
+      this.notification.show('Błąd podczas sortowania', 'error');
       return throwError(() => err);
     })
   );
@@ -72,7 +67,7 @@ export class TodoService {
   return this.http.get<TodoModel[]>(`${this.apiUrl}/todos`).pipe(
     tap(todos => this.todosSubject.next(todos)),
     catchError(err => {
-      this.notification('Pobieranie danych nie powiodło się', 'error');
+      this.notification.show('Pobieranie danych nie powiodło się', 'error');
       return throwError(() => err);
     })
     );
@@ -91,7 +86,7 @@ export class TodoService {
       switchMap(() => this.loadTodos()),
     
     catchError(err => {
-        this.notification('Edytowanie nie powiodło się ','error');
+        this.notification.show('Edytowanie nie powiodło się ','error');
         return throwError(() => err)
       })
   );
@@ -110,7 +105,7 @@ export class TodoService {
       switchMap(() => this.loadTodos()),
       
       catchError(err => {
-        this.notification('Zmiana statusu nie powiodła się  ','error');
+        this.notification.show('Zmiana statusu nie powiodła się  ','error');
         return throwError(() => err)
       })
     );
@@ -124,7 +119,7 @@ export class TodoService {
       
       switchMap(() => this.loadTodos()),
       catchError(err => {
-        this.notification('Usuwanie nie powiodło się ','error');
+        this.notification.show('Usuwanie nie powiodło się ','error');
         return throwError(() => err)
       })
     );
@@ -162,7 +157,9 @@ export class TodoService {
     const future = new Date(today);
     future.setDate(today.getDate()+2)
     const status = todo.completed!;
-    if ( !status && endDate < today ){
+    if ( status ){
+    return 'checked';
+    }else if ( !status && endDate < today ){
     return 'expired';
     }else if( !status && endDate < future ){
       return 'upcoming';
