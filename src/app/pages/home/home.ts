@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TodoInputComponent } from '../../components/todo-input/todo-input';
 import { TodoListComponent } from '../../components/todo-list/todo-list';
-import { Priority, TodoModels as TodoModel } from '../../models/todo.models';
+import { Priority, TodoModel as TodoModel } from '../../models/todo.model';
 import { TodoService } from '../../services/todo.service';
 import { Observable } from 'rxjs';
 

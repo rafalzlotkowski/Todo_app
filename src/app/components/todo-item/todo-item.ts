@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, Output,EventEmitter, output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from "@angular/router";
-import {  TodoModels as TodoModel } from '../../models/todo.models';
+import {  TodoModel as TodoModel } from '../../models/todo.model';
 import { TodoService } from '../../services/todo.service';
 import { getTodoStatus} from '../../utils/todo.utils';
 
