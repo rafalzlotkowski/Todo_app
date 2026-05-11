@@ -2,7 +2,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TodoService } from '../../services/todo.service';
-import { Priority } from '../../models/todo.models';
+import { Priority } from '../../models/todo.model';
 import {NotificationService} from '../../services/notification-service';
 import { isValidDate, isNotPastDate } from '../../utils/todo.utils';
 

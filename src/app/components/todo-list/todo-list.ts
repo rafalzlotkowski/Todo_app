@@ -1,5 +1,5 @@
 import { Component, Input, Output,EventEmitter, inject } from '@angular/core';
-import { TodoModels  } from '../../models/todo.models';
+import { TodoModel  } from '../../models/todo.model';
 import { TodoItemComponent } from '../todo-item/todo-item';
 import { CommonModule } from '@angular/common';
 import { TodoService } from '../../services/todo.service';
@@ -14,14 +14,14 @@ import { TodoService } from '../../services/todo.service';
 export class TodoListComponent {
   constructor(){};
   private todoService = inject(TodoService);
-  @Input() todos: TodoModels[] = [];
+  @Input() todos: TodoModel[] = [];
 
-  @Output() toggle = new EventEmitter<TodoModels>();
+  @Output() toggle = new EventEmitter<TodoModel>();
   @Output() delete = new EventEmitter<number>();
   @Output() select = new EventEmitter<number>();
   @Output() edit = new EventEmitter<any>();
   @Output() filterChange = new EventEmitter<string>();
-  @Output() alltoggle = new EventEmitter<TodoModels>();
+  @Output() alltoggle = new EventEmitter<TodoModel>();
   
   toggleAll(completed: boolean) {
     this.todoService.toggleAllCompleted(completed).subscribe();

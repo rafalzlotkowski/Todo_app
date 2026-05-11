@@ -1,5 +1,5 @@
 export type Priority = 'low' | 'medium' | 'high';
-export interface TodoModels {
+export interface TodoModel {
   id: number;
   title: string;
   description?: string;

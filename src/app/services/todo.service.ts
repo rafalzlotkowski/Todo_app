@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Priority, TodoModels as TodoModel } from '../models/todo.models';
+import { Priority, TodoModel as TodoModel } from '../models/todo.model';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, catchError, Observable, switchMap, tap, throwError } from 'rxjs';
 import {NotificationService} from './notification-service';

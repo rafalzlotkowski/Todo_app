@@ -1,4 +1,4 @@
-import { Priority, TodoModels as TodoModel } from '../models/todo.models';
+import { Priority, TodoModel as TodoModel } from '../models/todo.model';
 
 export const isValidDate = (dueDate: string): boolean => {
   if (!dueDate) return false;
