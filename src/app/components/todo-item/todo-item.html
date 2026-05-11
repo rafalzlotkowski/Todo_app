@@ -18,9 +18,9 @@
 
 
     
-    <button (click)="onToggleComplete()  " >Zadanie: {{ todo.title }}</button>
+    <button (click)="onToggleComplete()  " class="wrap-anywhere" >Zadanie: {{ todo.title }} </button>
     @if (todo.description) {
-        <p>Opis: {{ todo.description }}</p>
+        <p class="wrap-anywhere" >Opis: {{ todo.description }}</p>
     }
     <p>Data zakończenia: {{todo.dueDate | date:'dd.MM.yyyy' }}</p>
     <p>Priorytet: {{todo.priority}}</p>
@@ -28,7 +28,7 @@
     <input type="checkbox" 
         [checked]="todo.completed" 
         (change)="onToggleComplete()" 
-        class="size-5">    
+        class="size-4">    
     <button [routerLink]="['/edit',todo.id]" class="bg-yellow-400 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg">Edit</button>
     <button (click)="deleteitem()" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg ">Delete </button>
        

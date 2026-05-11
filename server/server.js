@@ -76,6 +76,24 @@ app.post('/todos', (req, res) => {
     res.json(newTodo);
 });
 
+app.patch('/todos/toggle-all', (req, res) => {
+    const data = readData();
+    const { completed } = req.body;
+
+    if (completed === undefined) {
+        return res.status(400).json({ error: 'Completed status is required' });
+    }
+
+    data.todos = data.todos.map(todo => ({
+        ...todo,
+        completed: !!completed
+    }));
+
+    writeData(data);
+    res.json({ message: 'All todos updated', count: data.todos.length });
+});
+
+
 
 app.patch('/todos/:id', (req, res) => {
     const data = readData();

@@ -49,6 +49,7 @@ export class TodoService {
       })
     );
   } 
+    
 
   sortTodos(filter: string): Observable<TodoModel[]> {
     console.log(filter);
@@ -100,6 +101,22 @@ export class TodoService {
       
       catchError(err => {
         this.notification.show('Zmiana statusu nie powiodła się  ','error');
+        return throwError(() => err)
+      })
+    );
+  }
+  
+  toggleAllCompleted( completed: boolean): Observable<TodoModel[]> {
+    console.log()
+  return this.http.patch<TodoModel>(
+    `${this.apiUrl}/todos/toggle-all`,
+    { completed }
+    
+    ).pipe(
+      switchMap(() => this.loadTodos()),
+      
+      catchError(err => {
+        this.notification.show('Zmiana statusu dla wszystkich zadań nie powiodła się  ','error');
         return throwError(() => err)
       })
     );
