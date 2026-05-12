@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Priority, TodoModel as TodoModel } from '../models/todo.model';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, catchError, Observable, switchMap, tap, throwError } from 'rxjs';
@@ -17,9 +17,10 @@ export class TodoService {
   ) {
   }
 
-  private todosSubject = new BehaviorSubject<TodoModel[]>([]);
-  todos$ = this.todosSubject.asObservable();
- 
+  // private todosSubject = new BehaviorSubject<TodoModel[]>([]);
+  // todos$ = this.todosSubject.asObservable();
+  private _todos = signal<TodoModel[]>([]);
+  todos = this._todos.asReadonly();
   getTodoById(id: number): Observable<TodoModel> {
     return this.http.get<TodoModel>(`${this.apiUrl}/todos/${id}`).pipe(
       catchError(err => {
@@ -54,7 +55,7 @@ export class TodoService {
   sortTodos(filter: string): Observable<TodoModel[]> {
     console.log(filter);
   return this.http.get<TodoModel[]>(`${this.apiUrl}/todos?filter=${filter}`).pipe(
-    tap(todos => this.todosSubject.next(todos)),
+    tap(todos => this._todos.set(todos)),
     catchError(err => {
       this.notification.show('Błąd podczas sortowania', 'error');
       return throwError(() => err);
@@ -64,7 +65,7 @@ export class TodoService {
 
   loadTodos(): Observable<TodoModel[]> {
   return this.http.get<TodoModel[]>(`${this.apiUrl}/todos`).pipe(
-    tap(todos => this.todosSubject.next(todos)),
+    tap(todos => this._todos.set(todos)),
     catchError(err => {
       this.notification.show('Pobieranie danych nie powiodło się', 'error');
       return throwError(() => err);

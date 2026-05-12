@@ -1,4 +1,4 @@
-import { Component, Input, Output,EventEmitter, inject } from '@angular/core';
+import { Component, Input, Output,EventEmitter, inject, input, computed } from '@angular/core';
 import { TodoModel  } from '../../models/todo.model';
 import { TodoItemComponent } from '../todo-item/todo-item';
 import { CommonModule } from '@angular/common';
@@ -14,15 +14,10 @@ import { TodoService } from '../../services/todo.service';
 export class TodoListComponent {
   constructor(){};
   private todoService = inject(TodoService);
-  @Input() todos: TodoModel[] = [];
-
-  get completedCount(): number {
-    return this.todos.filter(todo => todo.completed).length;
-  }
-
-  get notCompletedCount(): number {
-    return this.todos.filter(todo => !todo.completed).length;
-  }
+  // @Input() todos: TodoModel[] = [];
+  todos = input.required<TodoModel[]>();
+  completedCount = computed(() => this.todos().filter(t => t.completed).length);
+  notCompletedCount = computed(() => this.todos().filter(t => !t.completed).length);
 
   
   @Output() toggle = new EventEmitter<TodoModel>();

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TodoInputComponent } from '../../components/todo-input/todo-input';
@@ -22,11 +22,11 @@ import { Observable } from 'rxjs';
 })
 export class Home {
   
-  todos$: Observable<TodoModel[]>;
-
-  constructor(private todoService: TodoService) {
-    this.todos$ = this.todoService.todos$;  
-  }
+  // todos$: Observable<TodoModel[]>;
+  todoService = inject(TodoService);
+  // constructor(todoService = inject(TodoService);) {
+  //   // this.todos$ = this.todoService.todos$;  
+  // }
   ngOnInit() {
     this.todoService.loadTodos();
   }

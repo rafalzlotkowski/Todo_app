@@ -26,7 +26,7 @@ constructor(
     private route: ActivatedRoute,
     private todoService: TodoService,
     private router: Router,
-    private cdr: ChangeDetectorRef,
+    // private cdr: ChangeDetectorRef,
     private notification: NotificationService
      
 
@@ -37,8 +37,8 @@ ngOnInit() {
   const id = Number(this.route.snapshot.paramMap.get('id'));
   console.log('ID z route:', id);
   this.todoService.getTodoById(id).subscribe(original => {
-  this.todo = { ...original };
-  this.cdr.detectChanges();
+  this.todo.set({ ...original });
+  // this.cdr.detectChanges();
   
 });
  

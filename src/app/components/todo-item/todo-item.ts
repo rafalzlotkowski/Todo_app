@@ -1,71 +1,60 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, Output,EventEmitter, output, SimpleChanges } from '@angular/core';
+import { Component, Output, EventEmitter, input, computed, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from "@angular/router";
-import {  TodoModel as TodoModel } from '../../models/todo.model';
+import { TodoModel } from '../../models/todo.model';
 import { TodoService } from '../../services/todo.service';
-import { getTodoStatus} from '../../utils/todo.utils';
-
-
-
+import { getTodoStatus } from '../../utils/todo.utils';
 
 @Component({
   selector: 'app-todo-item',
-  standalone:true,
+  standalone: true,
   imports: [FormsModule, RouterModule, CommonModule],
   templateUrl: './todo-item.html',
   styleUrl: './todo-item.css',
 })
 export class TodoItemComponent {
-  @Input() todo!: TodoModel;
-  @Input() add = new EventEmitter<{id: number, title: string, description:string, dueDate?:string }>();
-  @Output() toggle = new EventEmitter <TodoModel>;
-  @Output() delete = new EventEmitter <number>;
-  @Output() edit = new EventEmitter<any>();
-  @Output() select = new EventEmitter<number>();
+  // Sygnały wejściowe (Input Signals)
+  todo = input.required<TodoModel>();
   
-  constructor(private todoservice: TodoService ){};
-  statusClasses: Record<string, string> = {
-  checked: 'bg-gray-400',
-  expired: 'bg-red-400',
-  upcoming: 'bg-yellow-300',
-  lowpriority: 'bg-green-300',
-  mediumpriority: 'bg-orange-300',
-  highpriority: 'bg-blue-400',
-  ok: 'bg-gray-500',
-};
+  // Outputy (możesz też rozważyć użycie nowej funkcji output() w przyszłości)
+  @Output() toggle = new EventEmitter<TodoModel>();
+  @Output() delete = new EventEmitter<number>();
+  
+  // Użycie inject() zamiast konstruktora jest nowocześniejszym standardem
+  private todoservice = inject(TodoService);
 
-getClass(todo: TodoModel): string {
-  const status = getTodoStatus(todo, todo.priority);
-  return this.statusClasses[status];
-}
-getTodoState(todo: TodoModel) {
-  const status = getTodoStatus(todo, todo.priority);
-
-  return {
-    status,
-    className: this.statusClasses[status]
+  private readonly statusClasses: Record<string, string> = {
+    checked: 'bg-gray-400',
+    expired: 'bg-red-400',
+    upcoming: 'bg-yellow-300',
+    lowpriority: 'bg-green-300',
+    mediumpriority: 'bg-orange-300',
+    highpriority: 'bg-blue-400',
+    ok: 'bg-gray-500',
   };
-}
-  
+
+  // Jeden sygnał obliczeniowy dla całego stanu wizualnego
+  todoState = computed(() => {
+    const currentTodo = this.todo();
+    const status = getTodoStatus(currentTodo, currentTodo.priority);
+    return {
+      status,
+      className: this.statusClasses[status] || 'bg-gray-500'
+    };
+  });
 
   onToggleComplete() {
-  this.toggle.emit(this.todo);
+    this.toggle.emit(this.todo());
   }
 
   deleteitem() {
-  if (!this.todo.completed) {
-    const confirmed = confirm(
-      "To zadanie nie jest oznaczone jako wykonane. Czy na pewno chcesz je usunąć?"
-    );
-
-    if (!confirmed) {
-      return;
+    if (!this.todo().completed) {
+      const confirmed = confirm(
+        "To zadanie nie jest oznaczone jako wykonane. Czy na pewno chcesz je usunąć?"
+      );
+      if (!confirmed) return;
     }
+    this.delete.emit(this.todo().id);
   }
-
-  this.delete.emit(this.todo.id);
-  }  
-  
-  
 }
