@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Output, EventEmitter, input, computed, inject, output } from '@angular/core';
+import { Component, input, computed, inject, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from "@angular/router";
 import { TodoModel } from '../../models/todo.model';

@@ -1,9 +1,9 @@
-import { Component, Output, EventEmitter, inject, output } from '@angular/core';
+import { Component,inject, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TodoService } from '../../services/todo.service';
 import { Priority } from '../../models/todo.model';
-import {NotificationService} from '../../services/notification-service';
+import { NotificationService} from '../../services/notification-service';
 import { isValidDate, isNotPastDate } from '../../utils/todo.utils';
 
 

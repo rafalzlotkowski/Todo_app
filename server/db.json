@@ -6,7 +6,7 @@
       "description": "",
       "dueDate": "2026-05-13",
       "priority": "medium",
-      "completed": false
+      "completed": true
     },
     {
       "id": 6,

@@ -1,4 +1,4 @@
-import { Component, Input, Output,EventEmitter, inject, input, computed, output } from '@angular/core';
+import { Component, inject, input, computed, output } from '@angular/core';
 import { TodoModel  } from '../../models/todo.model';
 import { TodoItemComponent } from '../todo-item/todo-item';
 import { CommonModule } from '@angular/common';
@@ -14,7 +14,6 @@ import { TodoService } from '../../services/todo.service';
 export class TodoListComponent {
   constructor(){};
   private todoService = inject(TodoService);
-  // @Input() todos: TodoModel[] = [];
   todos = input.required<TodoModel[]>();
   completedCount = computed(() => this.todos().filter(t => t.completed).length);
   notCompletedCount = computed(() => this.todos().filter(t => !t.completed).length);

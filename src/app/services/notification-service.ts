@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
 
 export interface Notification {
   message: string | null;
@@ -10,15 +9,14 @@ export interface Notification {
   providedIn: 'root',
 })
 export class NotificationService {
-  private notificationSubject = new BehaviorSubject<Notification>({
-    message: null,
+private notificationSignal = signal<Notification>({
+      message: null,
     status: null
   });
 
-  notification$ = this.notificationSubject.asObservable();
-
+  notification = this.notificationSignal.asReadonly();
   show(message: string, status: 'success' | 'error' = 'success') {
-    this.notificationSubject.next({ message, status });
+    this.notificationSignal.set({ message, status });
 
     setTimeout(() => {
       this.clear();
@@ -26,6 +24,6 @@ export class NotificationService {
   }
 
   clear() {
-    this.notificationSubject.next({ message: null, status: null });
+    this.notificationSignal.set({ message: null, status: null });
   }
 }
