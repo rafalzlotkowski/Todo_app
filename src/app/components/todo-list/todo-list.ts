@@ -16,6 +16,15 @@ export class TodoListComponent {
   private todoService = inject(TodoService);
   @Input() todos: TodoModel[] = [];
 
+  get completedCount(): number {
+    return this.todos.filter(todo => todo.completed).length;
+  }
+
+  get notCompletedCount(): number {
+    return this.todos.filter(todo => !todo.completed).length;
+  }
+
+  
   @Output() toggle = new EventEmitter<TodoModel>();
   @Output() delete = new EventEmitter<number>();
   @Output() select = new EventEmitter<number>();
@@ -26,10 +35,17 @@ export class TodoListComponent {
   toggleAll(completed: boolean) {
     this.todoService.toggleAllCompleted(completed).subscribe();
   }
+  onDeleteCompleted() {
+    if (confirm('Czy na pewno chcesz usunąć wszystkie zakończone zadania?')) {
+      this.todoService.deleteCompleted().subscribe();
+    }
+  }
+  
+  
 
   onFilterChange(event: Event) {
-  const target = event.target as HTMLSelectElement;
-  const value = target.value;
-  this.filterChange.emit(value);
-}
+    const target = event.target as HTMLSelectElement;
+    const value = target.value;
+    this.filterChange.emit(value);
+  }
 }
