@@ -1,12 +1,10 @@
-import { Component, Input, Output, EventEmitter, input, ChangeDetectorRef } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit, signal, inject, output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { TodoService } from '../../services/todo.service';
 import { NotificationService } from '../../services/notification-service';
 import { isValidDate, isNotPastDate } from '../../utils/todo.utils';
-
-
-
+import { TodoModel } from '../../models/todo.model';
 
 @Component({
   selector: 'app-todo-edit',
@@ -15,70 +13,60 @@ import { isValidDate, isNotPastDate } from '../../utils/todo.utils';
   templateUrl: './todo-edit.html',
   styleUrl: './todo-edit.css',
 })
-export class TodoEdit {
-  todo: any = {};
-  priority: 'low' | 'medium' | 'high' = 'medium';
-
-  @Output() save = new EventEmitter<any>();
-  @Output() cancel = new EventEmitter<void>();
-
-constructor(
-    private route: ActivatedRoute,
-    private todoService: TodoService,
-    private router: Router,
-    // private cdr: ChangeDetectorRef,
-    private notification: NotificationService
-     
-
-  ) {}
-
-ngOnInit() {
+export class TodoEdit implements OnInit {
+  todo = signal<Partial<TodoModel>>({});
   
-  const id = Number(this.route.snapshot.paramMap.get('id'));
-  console.log('ID z route:', id);
-  this.todoService.getTodoById(id).subscribe(original => {
-  this.todo.set({ ...original });
-  // this.cdr.detectChanges();
-  
-});
- 
+  save = output<any>();
+  cancel = output<void>();
+
+  private route = inject(ActivatedRoute);
+  private todoService = inject(TodoService);
+  private router = inject(Router);
+  private notification = inject(NotificationService);
+
+  ngOnInit() {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.todoService.getTodoById(id).subscribe(original => {
+      this.todo.set({ ...original });
+    });
   }
-onSave() {
-  if (!this.todo.title.trim()) {
+
+  onSave() {
+    const current = this.todo(); 
+
+    if (!current.title?.trim()) {
       this.notification.show('Tytuł nie może być pusty', 'error');
       return;
     }
-    if (!isValidDate(this.todo.dueDate)) {
-    this.notification.show('Niepoprawna data (format DD-MM-RRRR)','error');
-    return;
-    }
-    if ( !isNotPastDate(this.todo.dueDate)) {
-    this.notification.show('Data nie może być z przeszłości !','error');
-    return;
-    }
-    this.todoService.editTodo(
-      this.todo.id,
-      this.todo.title.trim(),
-      this.todo.description.trim(),
-      this.todo.priority,
-      this.todo.dueDate
-    ).subscribe(() => {
-    this.notification.show('Zapisano zmiany', 'success');
-    this.router.navigate(['/']);
-  });
-}
-  
 
-onCancel() {
-  const confirmed = confirm(
-      "Czy na pewno chcesz odrzucić zmiany ?"
-    );
-
-    if (!confirmed) {
+    if (!isValidDate(current.dueDate ?? '')) {
+      this.notification.show('Niepoprawna data (format DD-MM-RRRR)', 'error');
       return;
     }
-  this.notification.show('Zmiany odrzucone ', 'success');
-  this.router.navigate(['/']); 
-}
 
+    if (!isNotPastDate(current.dueDate ?? '')) {
+      this.notification.show('Data nie może być z przeszłości!', 'error');
+      return;
+    }
+
+    this.todoService.editTodo(
+      current.id!, 
+      current.title.trim(), 
+      current.description ?? '', 
+      current.priority!, 
+      current.dueDate ?? ''
+    ).subscribe({
+      next: () => {
+        this.notification.show('Zapisano zmiany', 'success');
+        this.router.navigate(['/']);
+      },
+      error: () => this.notification.show('Błąd podczas zapisu', 'error')
+    });
+  }
+
+  onCancel() {
+    if (confirm("Czy na pewno chcesz odrzucić zmiany?")) {
+      this.router.navigate(['/']);
+    }
+  }
 }
