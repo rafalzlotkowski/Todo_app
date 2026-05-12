@@ -1,9 +1,9 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component,inject, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TodoService } from '../../services/todo.service';
 import { Priority } from '../../models/todo.model';
-import {NotificationService} from '../../services/notification-service';
+import { NotificationService} from '../../services/notification-service';
 import { isValidDate, isNotPastDate } from '../../utils/todo.utils';
 
 
@@ -20,13 +20,11 @@ export class TodoInputComponent {
   description = '';
   dueDate ='';
   priority: 'low' | 'medium' | 'high' = 'medium';
-  constructor(private todoService: TodoService,
-    private notification: NotificationService,
-    
+  private todoService = inject(TodoService);
+  private notification = inject(NotificationService);
 
-  ) {}
-  @Output() add = new EventEmitter<{ title: string; description: string ;dueDate: string; priority: Priority }>();
-  @Output() currentmessage = new EventEmitter<string>();
+  add = output<{ title: string; description: string; dueDate: string; priority: Priority }>();
+  currentmessage = output<string>();
   
 
   

@@ -1,7 +1,7 @@
-import { Injectable, signal } from '@angular/core';
-import { Priority, TodoModel as TodoModel } from '../models/todo.model';
+import { inject, Injectable, signal } from '@angular/core';
+import { Priority, TodoModel } from '../models/todo.model';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, catchError, Observable, switchMap, tap, throwError } from 'rxjs';
+import { catchError, Observable, switchMap, tap, throwError } from 'rxjs';
 import {NotificationService} from './notification-service';
 @Injectable({
   providedIn: 'root',
@@ -12,13 +12,10 @@ export class TodoService {
   
   private apiUrl = 'http://localhost:3000';
 
-  constructor(private http: HttpClient,
-    private notification: NotificationService
-  ) {
-  }
+    private http = inject(HttpClient);
+    private notification = inject(NotificationService);
+  
 
-  // private todosSubject = new BehaviorSubject<TodoModel[]>([]);
-  // todos$ = this.todosSubject.asObservable();
   private _todos = signal<TodoModel[]>([]);
   todos = this._todos.asReadonly();
   getTodoById(id: number): Observable<TodoModel> {

@@ -3,9 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TodoInputComponent } from '../../components/todo-input/todo-input';
 import { TodoListComponent } from '../../components/todo-list/todo-list';
-import { Priority, TodoModel as TodoModel } from '../../models/todo.model';
+import { Priority, TodoModel } from '../../models/todo.model';
 import { TodoService } from '../../services/todo.service';
-import { Observable } from 'rxjs';
 
 
 @Component({
@@ -22,11 +21,8 @@ import { Observable } from 'rxjs';
 })
 export class Home {
   
-  // todos$: Observable<TodoModel[]>;
   todoService = inject(TodoService);
-  // constructor(todoService = inject(TodoService);) {
-  //   // this.todos$ = this.todoService.todos$;  
-  // }
+  
   ngOnInit() {
     this.todoService.loadTodos();
   }

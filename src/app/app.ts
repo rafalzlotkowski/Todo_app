@@ -18,11 +18,9 @@ import { NotificationService } from './services/notification-service';
 })
 export class App implements OnInit {
   private todoService = inject(TodoService);
-  private notificationService = inject(NotificationService);
+  notificationService = inject(NotificationService);
 
-  // Przypisanie następuje od razu, TypeScript jest zadowolony
-  notification$ = this.notificationService.notification$;
-
+  notification = this.notificationService.notification;
   ngOnInit() {
     this.todoService.loadTodos().subscribe();
   }
