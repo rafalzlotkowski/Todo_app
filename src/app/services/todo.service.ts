@@ -132,4 +132,17 @@ export class TodoService {
       })
     );
   } 
+  deleteCompleted(): Observable<TodoModel[]> {
+    return this.http.delete<any>(
+    `${this.apiUrl}/todos/delete-completed`).pipe(
+      switchMap(() => this.loadTodos()),
+      
+      catchError(err => {
+        this.notification.show('Usuwanie nie powiodło się   ','error');
+        return throwError(() => err)
+      })
+    );
+    
+
+  }
 }

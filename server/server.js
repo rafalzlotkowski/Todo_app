@@ -137,6 +137,19 @@ app.patch('/todos/:id', (req, res) => {
     res.json(todo);
 });
 
+app.delete('/todos/delete-completed',(req, res) => {
+    const data = readData();
+    const initialCount = data.todos.length;
+    data.todos = data.todos.filter(todo => !todo.completed)
+    const deletedCount = initialCount - data.todos.length;
+    
+    writeData(data);
+    
+    res.json({ 
+        message: 'Completed todos deleted successfully', 
+        deletedCount
+    })
+});
 
 app.delete('/todos/:id', (req, res) => {
     const data = readData();
@@ -152,6 +165,8 @@ app.delete('/todos/:id', (req, res) => {
 
     res.json({ message: 'Todo deleted successfully' });
 });
+
+
 
 app.listen(3000, () => {
     console.log("Server działa: http://localhost:3000");
