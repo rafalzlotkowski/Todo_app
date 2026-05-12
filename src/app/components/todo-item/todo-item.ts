@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Output, EventEmitter, input, computed, inject } from '@angular/core';
+import { Component, Output, EventEmitter, input, computed, inject, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from "@angular/router";
 import { TodoModel } from '../../models/todo.model';
@@ -14,14 +14,11 @@ import { getTodoStatus } from '../../utils/todo.utils';
   styleUrl: './todo-item.css',
 })
 export class TodoItemComponent {
-  // Sygnały wejściowe (Input Signals)
   todo = input.required<TodoModel>();
   
-  // Outputy (możesz też rozważyć użycie nowej funkcji output() w przyszłości)
-  @Output() toggle = new EventEmitter<TodoModel>();
-  @Output() delete = new EventEmitter<number>();
+  toggle = output<TodoModel>();
+  delete = output<number>();
   
-  // Użycie inject() zamiast konstruktora jest nowocześniejszym standardem
   private todoservice = inject(TodoService);
 
   private readonly statusClasses: Record<string, string> = {
@@ -34,7 +31,6 @@ export class TodoItemComponent {
     ok: 'bg-gray-500',
   };
 
-  // Jeden sygnał obliczeniowy dla całego stanu wizualnego
   todoState = computed(() => {
     const currentTodo = this.todo();
     const status = getTodoStatus(currentTodo, currentTodo.priority);

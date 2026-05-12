@@ -22,11 +22,8 @@ import { Observable } from 'rxjs';
 })
 export class Home {
   
-  // todos$: Observable<TodoModel[]>;
   todoService = inject(TodoService);
-  // constructor(todoService = inject(TodoService);) {
-  //   // this.todos$ = this.todoService.todos$;  
-  // }
+  
   ngOnInit() {
     this.todoService.loadTodos();
   }
