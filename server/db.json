@@ -1,60 +1,12 @@
 {
   "todos": [
     {
-      "id": 5,
-      "title": "dsadsa",
-      "description": "",
+      "id": 1,
+      "title": "zadanie 1 ",
+      "description": "zadanie 1 ",
       "dueDate": "2026-05-13",
       "priority": "medium",
       "completed": true
-    },
-    {
-      "id": 6,
-      "title": "dsads",
-      "description": "",
-      "dueDate": "2222-02-22",
-      "priority": "medium",
-      "completed": false
-    },
-    {
-      "id": 7,
-      "title": "sad",
-      "description": "",
-      "dueDate": "2222-02-22",
-      "priority": "high",
-      "completed": false
-    },
-    {
-      "id": 8,
-      "title": "das",
-      "description": "dsa",
-      "dueDate": "2222-02-22",
-      "priority": "medium",
-      "completed": false
-    },
-    {
-      "id": 9,
-      "title": "dsa",
-      "description": "",
-      "dueDate": "2222-02-22",
-      "priority": "high",
-      "completed": false
-    },
-    {
-      "id": 10,
-      "title": "demo",
-      "description": "demo",
-      "dueDate": "2222-02-11",
-      "priority": "high",
-      "completed": false
-    },
-    {
-      "id": 11,
-      "title": "das",
-      "description": "sda",
-      "dueDate": "2222-02-22",
-      "priority": "low",
-      "completed": false
     }
   ]
 }
