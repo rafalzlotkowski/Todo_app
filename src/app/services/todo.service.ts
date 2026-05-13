@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { Priority, TodoModel } from '../models/todo.model';
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, switchMap, tap, throwError } from 'rxjs';
@@ -12,18 +12,33 @@ export class TodoService {
   
   private apiUrl = 'http://localhost:3000';
 
-    private http = inject(HttpClient);
-    private notification = inject(NotificationService);
-  
+  private http = inject(HttpClient);
+  private notification = inject(NotificationService);
 
   private _todos = signal<TodoModel[]>([]);
   todos = this._todos.asReadonly();
+
+
+  private _searchQuery = signal('')
+
+  filteredTodos = computed(() =>{
+    const query = this._searchQuery().toLowerCase();
+    return this._todos().filter(t => t.title .toLowerCase().includes(query) ||
+  t.description?.toLowerCase().includes(query))
+
+  })
+
+
   private handleErr<T>(message: string) {
   return catchError<T, Observable<never>>((err) => {
     this.notification.show(message, 'error');
     return throwError(() => err);
   });
   }
+  updateSearch(query: string) {
+    this._searchQuery.set(query);
+  }
+
   getTodoById(id: number): Observable<TodoModel> {
     return this.http.get<TodoModel>(`${this.apiUrl}/todos/${id}`).pipe(
         this.handleErr('Pobieranie zadania nie powiodło się ')
@@ -48,6 +63,9 @@ export class TodoService {
       this.handleErr('Błąd podczas sortowania')
   );
   }
+ 
+
+  
   
   addTodo(title: string, description: string, priority : Priority ,dueDate?: string): Observable<TodoModel>{
     const newTodo: Omit<TodoModel, 'id'> = {
