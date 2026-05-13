@@ -2,11 +2,19 @@
   "todos": [
     {
       "id": 1,
-      "title": "zadanie 1 ",
+      "title": "zadanie 1",
       "description": "zadanie 1 ",
       "dueDate": "2026-05-13",
       "priority": "medium",
-      "completed": true
+      "completed": false
+    },
+    {
+      "id": 2,
+      "title": "zadanie1ds",
+      "description": "dssas",
+      "dueDate": "2222-02-22",
+      "priority": "medium",
+      "completed": false
     }
   ]
 }

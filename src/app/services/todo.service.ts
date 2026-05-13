@@ -18,13 +18,35 @@ export class TodoService {
 
   private _todos = signal<TodoModel[]>([]);
   todos = this._todos.asReadonly();
+  private handleErr<T>(message: string) {
+  return catchError<T, Observable<never>>((err) => {
+    this.notification.show(message, 'error');
+    return throwError(() => err);
+  });
+  }
   getTodoById(id: number): Observable<TodoModel> {
     return this.http.get<TodoModel>(`${this.apiUrl}/todos/${id}`).pipe(
-      catchError(err => {
-        this.notification.show('Pobieranie zadania nie powiodło się ','error');
-        return throwError(() => err)
-      })
-    )
+        this.handleErr('Pobieranie zadania nie powiodło się ')
+      );
+    
+    
+  }
+
+  loadTodos(): Observable<TodoModel[]> {
+  return this.http.get<TodoModel[]>(`${this.apiUrl}/todos`).pipe(
+    tap(todos => this._todos.set(todos)),
+      this.handleErr('Pobieranie danych nie powiodło się')
+      
+    );
+  }
+  
+
+  sortTodos(filter: string): Observable<TodoModel[]> {
+    return this.http.get<TodoModel[]>(`${this.apiUrl}/todos?filter=${filter}`).pipe(
+      tap(todos => this._todos.set(todos)),
+      
+      this.handleErr('Błąd podczas sortowania')
+  );
   }
   
   addTodo(title: string, description: string, priority : Priority ,dueDate?: string): Observable<TodoModel>{
@@ -43,34 +65,14 @@ export class TodoService {
       this.notification.show("Zadanie zostało dodane!", 'success');
      }),
    
-    catchError(err => {
-        this.notification.show('Dodawanie zadania nie powiodło się ','error');
-        return throwError(() => err)
-      })
+        this.handleErr('Dodawanie zadania nie powiodło się ')
     );
   } 
     
 
-  sortTodos(filter: string): Observable<TodoModel[]> {
-    return this.http.get<TodoModel[]>(`${this.apiUrl}/todos?filter=${filter}`).pipe(
-      tap(todos => this._todos.set(todos)),
-      
-      catchError(err => {
-      this.notification.show('Błąd podczas sortowania', 'error');
-      return throwError(() => err);
-    })
-  );
-  }
+  
 
-  loadTodos(): Observable<TodoModel[]> {
-  return this.http.get<TodoModel[]>(`${this.apiUrl}/todos`).pipe(
-    tap(todos => this._todos.set(todos)),
-    catchError(err => {
-      this.notification.show('Pobieranie danych nie powiodło się', 'error');
-      return throwError(() => err);
-    })
-    );
-  }
+  
   
   editTodo(id:number,title: string, description:string, priority: Priority ,dueDate?:string): Observable<TodoModel> {
     const updatedTodo: Partial<TodoModel> = {
@@ -89,10 +91,7 @@ export class TodoService {
     }),
       
     
-    catchError(err => {
-        this.notification.show('Edytowanie nie powiodło się ','error');
-        return throwError(() => err)
-      })
+        this.handleErr('Edytowanie nie powiodło się ')
   );
   }
 
@@ -105,13 +104,34 @@ export class TodoService {
       tap((updated) =>
         this._todos.update(current => current.map(t => t.id === id ? updated:t))
       ),
-      catchError(err => {
-        this.notification.show('Zmiana statusu nie powiodła się  ','error');
-        return throwError(() => err)
-      })
+        this.handleErr('Zmiana statusu nie powiodła się  ')
     );
   }
   
+  
+
+  deleteTodo(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/todos/${id}`).pipe(
+    tap(() => {
+        this._todos.update(current => current.filter(t => t.id !== id));
+        this.notification.show("Zadanie usunięte", 'success');
+      }),
+        this.handleErr('Usuwanie nie powiodło się ')
+    );
+  } 
+  deleteCompleted(): Observable<void> {
+    return this.http.delete<void>(
+    `${this.apiUrl}/todos/delete-completed`).pipe(
+      tap(() => {
+        this._todos.update(current => current.filter(t => !t.completed));
+        this.notification.show("Usunięto zakończone zadania", 'success');
+      }),    
+        this.handleErr('Usuwanie nie powiodło się   ')
+    );
+    
+
+  }
+
   toggleAllCompleted(completed: boolean): Observable<any> {
   return this.http.patch<any>(
     `${this.apiUrl}/todos/toggle-all`,
@@ -123,38 +143,7 @@ export class TodoService {
       );
       this.notification.show("Zmieniono status wszystkich zadań", 'success');
     }),
-    catchError(err => {
-        this.notification.show('Zmiana statusu nie powiodła się ','error');
-        return throwError(() => err)
-      })
+        this.handleErr('Zmiana statusu nie powiodła się ')
   );
 }
-
-  deleteTodo(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/todos/${id}`).pipe(
-    tap(() => {
-        this._todos.update(current => current.filter(t => t.id !== id));
-        this.notification.show("Zadanie usunięte", 'success');
-      }),
-      catchError(err => {
-        this.notification.show('Usuwanie nie powiodło się ','error');
-        return throwError(() => err)
-      })
-    );
-  } 
-  deleteCompleted(): Observable<void> {
-    return this.http.delete<void>(
-    `${this.apiUrl}/todos/delete-completed`).pipe(
-      tap(() => {
-        this._todos.update(current => current.filter(t => !t.completed));
-        this.notification.show("Usunięto zakończone zadania", 'success');
-      }),    
-      catchError(err => {
-        this.notification.show('Usuwanie nie powiodło się   ','error');
-        return throwError(() => err)
-      })
-    );
-    
-
-  }
 }
