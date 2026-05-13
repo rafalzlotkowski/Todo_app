@@ -24,7 +24,7 @@ export class TodoService {
   filteredTodos = computed(() =>{
     const query = this._searchQuery().toLowerCase();
     return this._todos().filter(t => t.title .toLowerCase().includes(query) ||
-  t.description?.toLowerCase().includes(query))
+  (t.description?.toLowerCase()|| '').includes(query))
 
   })
 
@@ -36,7 +36,7 @@ export class TodoService {
   });
   }
   updateSearch(query: string) {
-    this._searchQuery.set(query);
+  this._searchQuery.set(query);
   }
 
   getTodoById(id: number): Observable<TodoModel> {
