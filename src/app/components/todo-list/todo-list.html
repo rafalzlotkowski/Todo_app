@@ -38,14 +38,24 @@
     </select>
     
   </div>
+  <div>
+    <p class="font-semibold">Szukaj zadań </p>
+    <input 
+    type="text"
+    #searchInput
+    (input)="onSearchChange($event)"   
+     placeholder="Szukaj zadań..." 
+    class="w-full pl-10 pr-4 py-2 border border-gray-400 bg-white rounded-xl focus:ring-2 focus:ring-blue-500 outline-none shadow-sm"
+    />
+  </div>
   <div class="flex justify-between px-2 text-sm font-medium text-gray-600">
   <span>Zakończone: <b class="text-green-600"> {{completedCount()}} </b></span>
   <span>Do zrobienia: <b class="text-blue-600"> {{notCompletedCount()}}</b></span>
 </div>
 </div>
   
-  @for (todo of todos(); track todo.id) { 
-    <div class="p-1 bg-gray-300 rounded-xl shadow-lg mb-2">
+    @for (todo of todoService.filteredTodos(); track todo.id) {
+      <div class="p-1 bg-gray-300 rounded-xl shadow-lg mb-2">
       <app-todo-item
         [todo]="todo"
         (delete)="delete.emit($event)"
