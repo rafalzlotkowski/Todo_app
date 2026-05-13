@@ -2,7 +2,7 @@
   "todos": [
     {
       "id": 1,
-      "title": "zadanie 1 ",
+      "title": "zadanie 1",
       "description": "zadanie 1 ",
       "dueDate": "2026-05-13",
       "priority": "medium",
