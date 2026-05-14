@@ -11,13 +11,10 @@
 
 
   <app-todo-list
-    [todos]="todoService.todos()"
     (toggle)="ontoggleTodo($event)"
     (delete)="onDeleteTodo($event)"
-    (select)="onSelectTodo($event)"
     (edit)="onEditTodo($event)"
-    (filterChange)="onfilterChange($event)"
-    class="block">
+    (filterChange)="onfilterChange($event)">
   </app-todo-list>
 
 </div>

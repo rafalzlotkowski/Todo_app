@@ -14,7 +14,7 @@ import { TodoService } from '../../services/todo.service';
 export class TodoListComponent {
   constructor(){};
    todoService = inject(TodoService);
-  todos = input.required<TodoModel[]>();
+  todos = input<TodoModel[]>([]);
   completedCount = computed(() => this.todos().filter(t => t.completed).length);
   notCompletedCount = computed(() => this.todos().filter(t => !t.completed).length);
 

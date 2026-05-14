@@ -47,11 +47,7 @@ export class Home {
   
     selectedTodo: TodoModel | null = null;
   
-  onSelectTodo(id: number) {
-    this.todoService.getTodoById(id).subscribe(todo => {
-      this.selectedTodo = todo;
-    });
-  }
+  
   onfilterChange(filter: string) {
     this.todoService.sortTodos(filter).subscribe();
   }
