@@ -48,7 +48,7 @@ export class TodoInputComponent {
       priority: this.priority,
       dueDate: this.dueDate
     });
-
+    
   this.title='',
   this.description='',
   this.dueDate = ''
