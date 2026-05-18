@@ -51,31 +51,41 @@ app.get('/todos/:id', (req, res) => {
 
 app.post('/todos', (req, res) => {
     const data = readData();
-    const { title, description, priority ,dueDate } = req.body;
-    if (!title || title.trim() ==='') {
-        return res.status(400).json({ error: 'Title is required'});
-    }
-    if(dueDate && isNaN(Date.parse(dueDate))) {
-        return res.status(400).json({ error: 'Invalid due date format' });
-    }
     
+    const { title, description, priority, dueDate } = req.body;
+
+    if (!title || title.trim() === '') {
+        return res.status(400).json({ status: false, error: 'Title is required' });
+    }
+    if (dueDate && isNaN(Date.parse(dueDate))) {
+        return res.status(400).json({ status: false, error: 'Invalid due date format' });
+    }
 
     const nextId = Math.max(0, ...data.todos.map(t => t.id)) + 1;
 
-    const newTodo = {
+    const processedTodo = {
         id: nextId,
-        title,
+        title: title.toLowerCase(), 
         description: description || '',
-        dueDate: dueDate || null,
-        priority: priority,
-        completed: false
+        dueDate: dueDate || new Date().toISOString(),
+        priority: priority || 'medium',
+        completed: false,
+        metadata: {
+            createdAt: new Date().toISOString(),
+            status: "CREATED_SUCCESSFULLY",
+        }
     };
 
-    data.todos.push(newTodo);
+    data.todos.push(processedTodo);
     writeData(data);
-    res.json(newTodo);
-});
 
+
+    res.json({
+        data: processedTodo, 
+        status: true,
+        message: "Operacja zakończona sukcesem"
+    });
+});
 app.patch('/todos/toggle-all', (req, res) => {
     const data = readData();
     const { completed } = req.body;

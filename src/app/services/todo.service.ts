@@ -67,25 +67,18 @@ export class TodoService {
 
   
   
-  addTodo(title: string, description: string, priority : Priority ,dueDate?: string): Observable<TodoModel>{
-    const newTodo: Omit<TodoModel, 'id'> = {
-      title,
-      description,
-      dueDate,
-      priority,
-      completed: false
-    };
-       console.log(priority)
+addTodo(title: string, description: string, priority: Priority, dueDate?: string): Observable<any> {
+  const newTodo = { title, description, priority, dueDate, completed: false };
 
-    return this.http.post<TodoModel>(`${this.apiUrl}/todos`, newTodo).pipe(
-    tap((createdTodo) =>{
-      this._todos.update(current => [...current,createdTodo])
-      this.notification.show("Zadanie zostało dodane!", 'success');
-     }),
-   
-        this.handleErr('Dodawanie zadania nie powiodło się ')
-    );
-  } 
+  return this.http.post<any>(`${this.apiUrl}/todos`, newTodo).pipe(
+    tap((res) => {
+      this._todos.update(current => [...current, res.data]); 
+      
+      this.notification.show(res.message || "Dodano!", 'success');
+    }),
+    this.handleErr('Dodawanie nie powiodło się')
+  );
+}
     
 
   

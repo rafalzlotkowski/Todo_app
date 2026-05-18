@@ -15,8 +15,8 @@ export class TodoListComponent {
   constructor(){};
    todoService = inject(TodoService);
   todos = input<TodoModel[]>([]);
-  completedCount = computed(() => this.todos().filter(t => t.completed).length);
-  notCompletedCount = computed(() => this.todos().filter(t => !t.completed).length);
+  completedCount = computed(() => this.todoService.filteredTodos().filter(t => t.completed).length);
+  notCompletedCount = computed(() => this.todoService.filteredTodos().filter(t => !t.completed).length);
 
   
   toggle = output<TodoModel>();
