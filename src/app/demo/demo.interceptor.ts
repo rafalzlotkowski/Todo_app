@@ -3,46 +3,11 @@ import { of } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 let demoTodos = [
-  {
-    id: 2,
-    title: "Kupienie artykułów spożywczych",
-    description: "Lista: mleko, chleb, warzywa, makaron",
-    dueDate: "2026-05-21",
-    priority: "medium",
-    completed: false
-  },
-  {
-    id: 3,
-    title: "Umówienie wizyty u dentysty",
-    description: "Kontrola + czyszczenie",
-    dueDate: "2026-06-27",
-    priority: "medium",
-    completed: false
-  },
-  {
-    id: 4,
-    title: "Przygotowanie prezentacji",
-    description: "Slajdy na spotkanie projektowe",
-    dueDate: "2026-05-20",
-    priority: "medium",
-    completed: false
-  },
-  {
-    id: 5,
-    title: "Odebranie paczki",
-    description: "Paczkomat przy ul. Lipowej",
-    dueDate: "2026-06-22",
-    priority: "medium",
-    completed: false
-  },
-  {
-    id: 6,
-    title: "Zrobienie prania",
-    description: "Białe + kolorowe osobno",
-    dueDate: "2026-05-22",
-    priority: "medium",
-    completed: false
-  }
+  { id: 2, title: "Kupienie artykułów spożywczych", description: "Lista: mleko, chleb, warzywa, makaron", dueDate: "2026-05-21", priority: "medium", completed: false },
+  { id: 3, title: "Umówienie wizyty u dentysty", description: "Kontrola + czyszczenie", dueDate: "2026-06-27", priority: "medium", completed: false },
+  { id: 4, title: "Przygotowanie prezentacji", description: "Slajdy na spotkanie projektowe", dueDate: "2026-05-20", priority: "medium", completed: false },
+  { id: 5, title: "Odebranie paczki", description: "Paczkomat przy ul. Lipowej", dueDate: "2026-06-22", priority: "medium", completed: false },
+  { id: 6, title: "Zrobienie prania", description: "Białe + kolorowe osobno", dueDate: "2026-05-22", priority: "medium", completed: false }
 ];
 
 export const demoInterceptor: HttpInterceptorFn = (req, next) => {
@@ -50,8 +15,11 @@ export const demoInterceptor: HttpInterceptorFn = (req, next) => {
     return next(req);
   }
 
+  if (!req.url.includes('/todos')) {
+    return next(req);
+  }
+
   const cleanUrl = req.url.split('?')[0];
-  
   const segments = cleanUrl.split('/').filter(segment => segment.length > 0);
   const lastSegment = segments[segments.length - 1] || '';
 
@@ -62,34 +30,25 @@ export const demoInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   if (req.method === 'GET') {
-    if (!isNaN(numericId) && cleanUrl.includes('/todos/')) {
+    if (!isNaN(numericId)) {
       const todo = demoTodos.find(t => Number(t.id) === numericId);
       return of(new HttpResponse({ status: todo ? 200 : 404, body: todo || null }));
     }
 
-    if (cleanUrl.endsWith('/todos?filter') || cleanUrl.endsWith('/todos/')) {
+    if (lastSegment === 'todos') {
       const filter = (req.params.get('filter') || '').toLowerCase().trim();
       let filteredResults = [...demoTodos];
-      
-      if (filter === 'completed') {
-        filteredResults = filteredResults.filter(t => t.completed);
-      } else if (filter === 'incomplete') {
-        filteredResults = filteredResults.filter(t => !t.completed);
-      } else if (filter === 'low') {
-        filteredResults = filteredResults.filter(t => t.priority === 'low');
-      } else if (filter === 'medium') {
-        filteredResults = filteredResults.filter(t => t.priority === 'medium');
-      } else if (filter === 'high') {
-        filteredResults = filteredResults.filter(t => t.priority === 'high');
-      }
+      if (filter === 'completed') filteredResults = filteredResults.filter(t => t.completed);
+      else if (filter === 'incomplete') filteredResults = filteredResults.filter(t => !t.completed);
+      else if (['low', 'medium', 'high'].includes(filter)) filteredResults = filteredResults.filter(t => t.priority === filter);
 
       return of(new HttpResponse({ status: 200, body: filteredResults }));
     }
   }
 
-  if (req.method === 'POST' && (cleanUrl.endsWith('/todos') || cleanUrl.endsWith('/todos/'))) {
+  if (req.method === 'POST' && lastSegment === 'todos') {
     const body = req.body as any;
-    const newTodo = { id: Date.now(), ...body };
+    const newTodo = { id: Date.now(), ...body, completed: body.completed ?? false };
     demoTodos.push(newTodo);
     return of(new HttpResponse({ status: 201, body: { message: 'Dodano!', data: newTodo } }));
   }
@@ -101,7 +60,7 @@ export const demoInterceptor: HttpInterceptorFn = (req, next) => {
       return of(new HttpResponse({ status: 200, body: { success: true } }));
     }
 
-    if (!isNaN(numericId) && cleanUrl.includes('/todos/')) {
+    if (!isNaN(numericId)) {
       const body = req.body as any;
       demoTodos = demoTodos.map(todo => Number(todo.id) === numericId ? { ...todo, ...body } : todo);
       const updated = demoTodos.find(todo => Number(todo.id) === numericId);
@@ -109,21 +68,18 @@ export const demoInterceptor: HttpInterceptorFn = (req, next) => {
     }
   }
 
- if (req.method === 'DELETE') {
+  if (req.method === 'DELETE') {
     if (lastSegment === 'delete-completed') {
       demoTodos = demoTodos.filter(todo => !todo.completed);
       return of(new HttpResponse({ status: 200, body: null }));
     }
 
-    if (!isNaN(numericId) && cleanUrl.includes('/todos/')) {
+    if (!isNaN(numericId)) {
       const todoExists = demoTodos.some(todo => Number(todo.id) === numericId);
-      
       if (!todoExists) {
         return of(new HttpResponse({ status: 404, body: null }));
       }
-
       demoTodos = demoTodos.filter(todo => Number(todo.id) !== numericId);
-      
       return of(new HttpResponse({ status: 200, body: null }));
     }
   }
