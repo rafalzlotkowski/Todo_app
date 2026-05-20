@@ -3,6 +3,7 @@ import { of } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 let demoTodos = [
+  { id: 1, title: "zapłacenie rachunków", description: "zapłacić za gaz/prąd", dueDate: "2026-05-21", priority: "high", completed: true},
   { id: 2, title: "Kupienie artykułów spożywczych", description: "Lista: mleko, chleb, warzywa, makaron", dueDate: "2026-05-21", priority: "medium", completed: false },
   { id: 3, title: "Umówienie wizyty u dentysty", description: "Kontrola + czyszczenie", dueDate: "2026-06-27", priority: "medium", completed: false },
   { id: 4, title: "Przygotowanie prezentacji", description: "Slajdy na spotkanie projektowe", dueDate: "2026-05-20", priority: "medium", completed: false },
@@ -36,8 +37,14 @@ export const demoInterceptor: HttpInterceptorFn = (req, next) => {
     }
 
     if (lastSegment === 'todos') {
-      const filter = (req.params.get('filter') || '').toLowerCase().trim();
+      let filter = (req.params.get('filter') || '').toLowerCase().trim();
       let filteredResults = [...demoTodos];
+      if (!filter && req.url.includes('filter=')) {
+        const urlParts = req.url.split('filter=');
+        if (urlParts.length > 1) {
+          filter = urlParts[1].split('&')[0].toLowerCase().trim();
+         }
+        }
       if (filter === 'completed') filteredResults = filteredResults.filter(t => t.completed);
       else if (filter === 'incomplete') filteredResults = filteredResults.filter(t => !t.completed);
       else if (['low', 'medium', 'high'].includes(filter)) filteredResults = filteredResults.filter(t => t.priority === filter);
