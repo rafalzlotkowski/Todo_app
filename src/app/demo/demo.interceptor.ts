@@ -3,15 +3,17 @@ import { of } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 let demoTodos = [
-  { id: 1, title: "zapłacenie rachunków", description: "zapłacić za gaz/prąd", dueDate: "2026-05-21", priority: "high", completed: true},
+  { id: 1, title: "zapłacenie rachunków", description: "zapłacić za gaz/prąd", dueDate: "2026-06-10", priority: "high", completed: true},
   { id: 2, title: "Kupienie artykułów spożywczych", description: "Lista: mleko, chleb, warzywa, makaron", dueDate: "2026-05-21", priority: "medium", completed: false },
-  { id: 3, title: "Umówienie wizyty u dentysty", description: "Kontrola + czyszczenie", dueDate: "2026-06-27", priority: "medium", completed: false },
-  { id: 4, title: "Przygotowanie prezentacji", description: "Slajdy na spotkanie projektowe", dueDate: "2026-05-20", priority: "medium", completed: false },
-  { id: 5, title: "Odebranie paczki", description: "Paczkomat przy ul. Lipowej", dueDate: "2026-06-22", priority: "medium", completed: false },
-  { id: 6, title: "Zrobienie prania", description: "Białe + kolorowe osobno", dueDate: "2026-05-22", priority: "medium", completed: false }
+  { id: 3, title: "Umówienie wizyty u dentysty", description: "Kontrola + czyszczenie", dueDate: "2026-06-27", priority: "high", completed: false },
+  { id: 4, title: "Przygotowanie prezentacji", description: "Slajdy na spotkanie projektowe", dueDate: "2026-05-30", priority: "medium", completed: false },
+  { id: 5, title: "Odebranie paczki", description: "Paczkomat przy ul. Lipowej", dueDate: "2026-06-29", priority: "medium", completed: false },
+  { id: 6, title: "Zrobienie prania", description: "Białe + kolorowe osobno", dueDate: "2026-05-28", priority: "medium", completed: false },
+  { id: 7, title: "Omówienie zagadnień", description: " Zagadnienia z seminarium", dueDate: "2026-05-28", priority: "high", completed: false}
 ];
 
 export const demoInterceptor: HttpInterceptorFn = (req, next) => {
+
   if (!environment.demo) {
     return next(req);
   }
@@ -55,41 +57,41 @@ export const demoInterceptor: HttpInterceptorFn = (req, next) => {
 
   if (req.method === 'POST' && lastSegment === 'todos') {
     const body = req.body as any;
-    const newTodo = { id: Date.now(), ...body, completed: body.completed ?? false };
+    const newTodo = {id: Date.now(),...body,completed:body.completed ?? false};
     demoTodos.push(newTodo);
-    return of(new HttpResponse({ status: 201, body: { message: 'Dodano!', data: newTodo } }));
+    return of (new HttpResponse({status: 201, body:{message:'Dodano!', data: newTodo } }));
   }
 
-  if (req.method === 'PATCH') {
-    if (lastSegment === 'toggle-all') {
-      const { completed } = req.body as any;
-      demoTodos = demoTodos.map(todo => ({ ...todo, completed }));
-      return of(new HttpResponse({ status: 200, body: { success: true } }));
+  if(req.method === 'PATCH') {
+    if (lastSegment === 'toggle-all'){
+      const {completed} = req.body as any;
+      demoTodos = demoTodos.map(todo=> ({...todo,completed}));
+      return of(new HttpResponse({ status : 200, body:{success:true}}))
     }
-
     if (!isNaN(numericId)) {
       const body = req.body as any;
-      demoTodos = demoTodos.map(todo => Number(todo.id) === numericId ? { ...todo, ...body } : todo);
+      demoTodos = demoTodos.map(todo => 
+        Number(todo.id) === numericId ? { ...todo, ...body } : todo
+      );
+      
       const updated = demoTodos.find(todo => Number(todo.id) === numericId);
-      return of(new HttpResponse({ status: 200, body: updated }));
+      return of(new HttpResponse({ status: updated ? 200 : 404, body: updated }));
     }
   }
-
+  
   if (req.method === 'DELETE') {
     if (lastSegment === 'delete-completed') {
       demoTodos = demoTodos.filter(todo => !todo.completed);
-      return of(new HttpResponse({ status: 200, body: null }));
+      return of (new HttpResponse({ status:200, body: null}));
     }
-
     if (!isNaN(numericId)) {
-      const todoExists = demoTodos.some(todo => Number(todo.id) === numericId);
-      if (!todoExists) {
-        return of(new HttpResponse({ status: 404, body: null }));
+      const todoExist = demoTodos.some(todo => Number(todo.id) === numericId);
+      if (!todoExist ) {
+        return of (new HttpResponse({ status: 404, body: null }));
       }
-      demoTodos = demoTodos.filter(todo => Number(todo.id) !== numericId);
-      return of(new HttpResponse({ status: 200, body: null }));
+      demoTodos = demoTodos.filter(todo => Number(todo.id) !== numericId );
+      return of (new HttpResponse({ status: 200, body: null }));
     }
   }
-
   return next(req);
 };
