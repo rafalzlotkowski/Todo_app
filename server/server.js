@@ -63,9 +63,10 @@ app.post('/todos', (req, res) => {
 
     const nextId = Math.max(0, ...data.todos.map(t => t.id)) + 1;
 
+    
     const processedTodo = {
         id: nextId,
-        title: title.toLowerCase(), 
+        title: title.toLowerCase(),
         description: description || '',
         dueDate: dueDate || new Date().toISOString(),
         priority: priority || 'medium',
@@ -79,11 +80,8 @@ app.post('/todos', (req, res) => {
     data.todos.push(processedTodo);
     writeData(data);
 
-
-    res.json({
-        data: processedTodo, 
-        status: true,
-        message: "Operacja zakończona sukcesem"
+    res.status(201).json({
+        "DaneZadania":(processedTodo)
     });
 });
 app.patch('/todos/toggle-all', (req, res) => {
@@ -91,6 +89,7 @@ app.patch('/todos/toggle-all', (req, res) => {
     const { completed } = req.body;
 
     if (completed === undefined) {
+    
         return res.status(400).json({ error: 'Completed status is required' });
     }
 
