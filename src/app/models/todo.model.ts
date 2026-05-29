@@ -11,7 +11,7 @@ export interface TodoModel {
 export interface ApiTodoResponse {
   id: number;
   title: string;
-  description: string;
+  opis: string;
   dueDate: string;
   priority: 'low' | 'medium' | 'high';
   completed: boolean;

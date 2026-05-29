@@ -37,14 +37,14 @@ export class TodoService {
 
   getTodoById(id: number): Observable<TodoModel> {
     return this.http.get<ApiTodoResponse>(`${this.apiUrl}/todos/${id}`).pipe(
-      map(rawTodo => mapToTodoModel(rawTodo)), // <-- Mapowanie pojedynczego elementu
+      map(rawTodo => mapToTodoModel(rawTodo)), 
       this.handleErr('Pobieranie zadania nie powiodło się')
     );
   }
 
   loadTodos(): Observable<TodoModel[]> {
     return this.http.get<ApiTodoResponse[]>(`${this.apiUrl}/todos`).pipe(
-      map(rawTodos => rawTodos.map(mapToTodoModel)), // <-- Mapowanie całej tablicy z API
+      map(rawTodos => rawTodos.map(mapToTodoModel)),
       tap(todos => this._todos.set(todos)),
       this.handleErr('Pobieranie danych nie powiodło się')
     );
@@ -52,7 +52,7 @@ export class TodoService {
 
   sortTodos(filter: string): Observable<TodoModel[]> {
     return this.http.get<ApiTodoResponse[]>(`${this.apiUrl}/todos?filter=${filter}`).pipe(
-      map(rawTodos => rawTodos.map(mapToTodoModel)), // <-- Mapowanie posortowanej tablicy
+      map(rawTodos => rawTodos.map(mapToTodoModel)), 
       tap(todos => this._todos.set(todos)),
       this.handleErr('Błąd podczas sortowania')
     );
@@ -68,7 +68,7 @@ export class TodoService {
     };
 
     return this.http.post<{ DaneZadania: ApiTodoResponse }>(`${this.apiUrl}/todos`, newTodo).pipe(
-      map(response => mapToTodoModel(response.DaneZadania)), // <-- Wyciągamy i mapujemy zadanie
+      map(response => mapToTodoModel(response.DaneZadania)),
       tap((createdTodo) => {
         this._todos.update(current => [...current, createdTodo]);
         this.notification.show("Zadanie zostało dodane!", 'success');
@@ -81,7 +81,7 @@ export class TodoService {
     const updatedTodo: Partial<TodoModel> = { title, description, priority, dueDate };
 
     return this.http.patch<ApiTodoResponse>(`${this.apiUrl}/todos/${id}`, updatedTodo).pipe(
-      map(rawTodo => mapToTodoModel(rawTodo)), // <-- Backend zwraca zaktualizowany obiekt, mapujemy go
+      map(rawTodo => mapToTodoModel(rawTodo)),
       tap((updated) => {
           this._todos.update(current => 
             current.map(todo => todo.id === id ? updated : todo)
@@ -94,7 +94,7 @@ export class TodoService {
 
   toggleCompleted(id: number, completed: boolean): Observable<TodoModel> {
     return this.http.patch<ApiTodoResponse>(`${this.apiUrl}/todos/${id}`, { completed }).pipe(
-      map(rawTodo => mapToTodoModel(rawTodo)), // <-- Mapowanie zaktualizowanego statusu
+      map(rawTodo => mapToTodoModel(rawTodo)), 
       tap((updated) =>
         this._todos.update(current => current.map(t => t.id === id ? updated : t))
       ),
@@ -138,8 +138,8 @@ export class TodoService {
 function mapToTodoModel(apiTodo: ApiTodoResponse): TodoModel {
   return {
     id: apiTodo.id,
-    title: apiTodo.title ? apiTodo.title.charAt(0).toUpperCase() + apiTodo.title.slice(1) : '',
-    description: apiTodo.description || '',
+    title: apiTodo.title ,
+    description: apiTodo.opis || '',
     priority: apiTodo.priority as Priority,
     completed: apiTodo.completed,
     dueDate: apiTodo.dueDate

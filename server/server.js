@@ -7,6 +7,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+function mapToApiResponse(todo) {
+    const { description, ...rest } = todo;
+    return {
+        ...rest,
+        opis: description || '' 
+    };
+}
+
 function readData() {
     const raw = fs.readFileSync('db.json');
     return JSON.parse(raw);
@@ -36,7 +44,7 @@ app.get('/todos', (req, res) => {
     } else if (filter === 'date-desc') {
         todos.sort((a, b) => new Date(b.dueDate) - new Date(a.dueDate));    
     }
-    res.json(todos);
+    res.json(todos.map(mapToApiResponse));
 });
 
 app.get('/todos/:id', (req, res) => {
@@ -46,7 +54,7 @@ app.get('/todos/:id', (req, res) => {
     if (!todo){
         return res.status(404).json({error: ' Todo not found'})
     }
-    res.json(todo);
+    res.json(mapToApiResponse(todo));
 });
 
 app.post('/todos', (req, res) => {
@@ -81,7 +89,7 @@ app.post('/todos', (req, res) => {
     writeData(data);
 
     res.status(201).json({
-        "DaneZadania":(processedTodo)
+        "DaneZadania": mapToApiResponse(processedTodo)
     });
 });
 app.patch('/todos/toggle-all', (req, res) => {
@@ -143,7 +151,7 @@ app.patch('/todos/:id', (req, res) => {
 
 
     writeData(data);
-    res.json(todo);
+    res.json(mapToApiResponse(todo));
 });
 
 app.delete('/todos/delete-completed',(req, res) => {
