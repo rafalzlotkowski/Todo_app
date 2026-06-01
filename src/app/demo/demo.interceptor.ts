@@ -54,7 +54,7 @@ export const demoInterceptor: HttpInterceptorFn = (req, next) => {
       return of(new HttpResponse({ status: 200, body: filteredResults }));
     }
   }
-
+  
   if (req.method === 'POST' && lastSegment === 'todos') {
     const body = req.body as any;
     

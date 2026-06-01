@@ -1,5 +1,5 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { Priority, TodoModel, ApiTodoResponse } from '../models/todo.model'; // upewnij się co do ścieżek
+import { Priority, TodoModel, ApiTodoResponse } from '../models/todo.model'; 
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { NotificationService } from './notification-service';
@@ -30,7 +30,7 @@ export class TodoService {
       return throwError(() => err);
     });
   }
-
+  
   updateSearch(query: string) {
     this._searchQuery.set(query);
   }
