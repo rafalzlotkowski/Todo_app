@@ -40,6 +40,10 @@ This will compile your project and store the build artifacts in the `dist/` dire
 
 To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
 
+Tyuł: Aplikacja do konwersji pomiędzy językiem Braille’a i językiem polskim
+
+Celem projektu będzie zaprojektowanie i zaimplementowanie aplikacji, która będzie umożliwiać konwersję pomiędzy tekstem zapisanym w kodzie Braille’a a zwykłym tekstem w języku polskim. Użytkownik będzie mógł wykonać zdjęcie tekstu w kodzie Braille’a za pomocą aplikacji mobilnej stworzonej w technologii Flutter. Backend aplikacji, napisany w języku Python, będzie przetwarzał przesłany obraz, wykrywał punkty Braille’a oraz konwertował je na tekst w języku polskim. Otrzymany wynik będzie wyświetlany na ekranie urządzenia mobilnego oraz opcjonalnie odtwarzany głosowo. Drugą funkcjonalnością aplikacji będzie możliwość wpisania tekstu w języku polskim, jego konwersja do kodu Braille’a oraz zapis w formacie umożliwiającym dalsze wykorzystanie, na przykład do druku na drukarce Braille’a
+
 ```bash
 ng test
 ```
